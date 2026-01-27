@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | KT's 書庫</title>
+    <style>
+        :root {
+            --silver: #C0C0C0;
+            --beige: #F5F5DC;
+            --etoupe: #8B7D6B;
+            --kinari: #FBFAF5;
+            --text-dark: #3D3D3D;
+            --text-muted: #6B6B6B;
+            --border: #D4D0C8;
+            --accent: #8B7D6B;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            background: var(--kinari);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--etoupe);
+            letter-spacing: 0.1em;
+        }
+        header .tagline {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        nav a:hover, nav a.active {
+            color: var(--etoupe);
+            background: var(--beige);
+        }
+        
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(139, 125, 107, 0.08);
+        }
+        .card h2 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* Price Cards */
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .price-item:last-child {
+            border-bottom: none;
+        }
+        .price-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .price-symbol {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+        .price-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--etoupe);
+        }
+        .price-change {
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+        .price-change.up { color: #2E7D32; }
+        .price-change.down { color: #C62828; }
+        
+        /* Trigger List */
+        .trigger-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .trigger-item:last-child {
+            border-bottom: none;
+        }
+        .trigger-word {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--etoupe);
+            margin-bottom: 0.5rem;
+        }
+        .trigger-action {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        /* Market Overview */
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+        .market-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .market-value {
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        footer a {
+            color: var(--etoupe);
+            text-decoration: none;
+        }
+        
+        /* Last Update */
+        .last-update {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        /* Refresh Button */
+        .refresh-btn {
+            background: var(--beige);
+            color: var(--etoupe);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .refresh-btn:hover {
+            background: var(--etoupe);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DASHBOARD</h1>
+            <p class="tagline">KT's Personal Command Center</p>
+        </header>
+
+        <nav>
+            <a href="index.html">ホーム</a>
+            <a href="wishlist.html">やりたいこと</a>
+            <a href="articles.html">記事</a>
+            <a href="conversations.html">会話履歴</a>
+            <a href="dashboard.html" class="active">ダッシュボード</a>
+        </nav>
+
+        <div class="grid">
+            <!-- Crypto & Gold Prices -->
+            <div class="card">
+                <h2>💰 相場</h2>
+                <div class="price-item">
+                    <div>
+                        <span class="price-name">Bitcoin</span>
+                        <span class="price-symbol">BTC</span>
+                    </div>
+                    <div>
+                        <span class="price-value" id="btc-price">--</span>
+                        <span class="price-change" id="btc-change">--</span>
+                    </div>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <span class="price-name">Monero</span>
+                        <span class="price-symbol">XMR</span>
+                    </div>
+                    <div>
+                        <span class="price-value" id="xmr-price">--</span>
+                        <span class="price-change" id="xmr-change">--</span>
+                    </div>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <span class="price-name">Gold</span>
+                        <span class="price-symbol">XAU</span>
+                    </div>
+                    <div>
+                        <span class="price-value" id="gold-price">--</span>
+                        <span class="price-change" id="gold-change">--</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="refresh-btn" onclick="fetchPrices()">更新</button>
+                </div>
+            </div>
+
+            <!-- World Market -->
+            <div class="card">
+                <h2>🌍 世界市況</h2>
+                <div class="market-item">
+                    <span class="market-label">日経平均</span>
+                    <span class="market-value" id="nikkei">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">S&P 500</span>
+                    <span class="market-value" id="sp500">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">ドル/円</span>
+                    <span class="market-value" id="usdjpy">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">米10年債</span>
+                    <span class="market-value" id="us10y">--</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+                    ※ 市況データは参考値です
+                </p>
+            </div>
+
+            <!-- Triggers -->
+            <div class="card">
+                <h2>⚡ トリガーワード</h2>
+                <div class="trigger-item">
+                    <div class="trigger-word">🌙 おやすみ</div>
+                    <div class="trigger-action">
+                        → ログ保存 → サイト更新 → 使用量確認
+                    </div>
+                </div>
+                <div class="trigger-item">
+                    <div class="trigger-word">☀️ おはよう</div>
+                    <div class="trigger-action">
+                        → 天気確認 → 予定確認 → 未完了タスク報告
+                    </div>
+                </div>
+                <div class="trigger-item">
+                    <div class="trigger-word">📊 使用量</div>
+                    <div class="trigger-action">
+                        → Claude使用状況を取得・報告
+                    </div>
+                </div>
+                <div class="trigger-item">
+                    <div class="trigger-word">💰 相場</div>
+                    <div class="trigger-action">
+                        → XMR/BTC/Gold の現在価格
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h2>🚀 クイックアクション</h2>
+                <div class="trigger-item">
+                    <div class="trigger-word">命令書一覧</div>
+                    <div class="trigger-action">
+                        現在の命令書ステータスを表示
+                    </div>
+                </div>
+                <div class="trigger-item">
+                    <div class="trigger-word">ログ保存</div>
+                    <div class="trigger-action">
+                        今日の会話をWebサイトに保存
+                    </div>
+                </div>
+                <div class="trigger-item">
+                    <div class="trigger-word">プロジェクト</div>
+                    <div class="trigger-action">
+                        進行中のプロジェクト一覧
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="last-update">最終更新: <span id="last-update">--</span></p>
+
+        <footer>
+            <p><a href="index.html">← KT's 書庫</a></p>
+        </footer>
+    </div>
+
+    <script>
+        async function fetchPrices() {
+            try {
+                // CoinGecko API for crypto
+                const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,monero&vs_currencies=usd&include_24hr_change=true');
+                const cryptoData = await cryptoRes.json();
+                
+                // Bitcoin
+                document.getElementById('btc-price').textContent = '$' + cryptoData.bitcoin.usd.toLocaleString();
+                const btcChange = cryptoData.bitcoin.usd_24h_change.toFixed(1);
+                document.getElementById('btc-change').textContent = (btcChange > 0 ? '+' : '') + btcChange + '%';
+                document.getElementById('btc-change').className = 'price-change ' + (btcChange >= 0 ? 'up' : 'down');
+                
+                // Monero
+                document.getElementById('xmr-price').textContent = '$' + cryptoData.monero.usd.toLocaleString();
+                const xmrChange = cryptoData.monero.usd_24h_change.toFixed(1);
+                document.getElementById('xmr-change').textContent = (xmrChange > 0 ? '+' : '') + xmrChange + '%';
+                document.getElementById('xmr-change').className = 'price-change ' + (xmrChange >= 0 ? 'up' : 'down');
+                
+                // Gold (approximate - using a placeholder since free gold APIs are limited)
+                document.getElementById('gold-price').textContent = '≈ $2,750';
+                document.getElementById('gold-change').textContent = '--';
+                
+                // Market indices (placeholders - would need proper API)
+                document.getElementById('nikkei').textContent = '≈ 40,000';
+                document.getElementById('sp500').textContent = '≈ 6,100';
+                document.getElementById('usdjpy').textContent = '≈ 156';
+                document.getElementById('us10y').textContent = '≈ 4.6%';
+                
+                // Update timestamp
+                document.getElementById('last-update').textContent = new Date().toLocaleString('ja-JP');
+            } catch (err) {
+                console.error('Error fetching prices:', err);
+            }
+        }
+        
+        // Load on page load
+        window.onload = fetchPrices;
+    </script>
+</body>
+</html>
