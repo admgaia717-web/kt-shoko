@@ -1,14 +1,20 @@
-/* 書庫 - CSS */
+/* 書庫 - CSS (Hermès Color Theme) */
 
 :root {
-    --bg: #0d1117;
-    --bg-secondary: #161b22;
-    --text: #e6edf3;
-    --text-muted: #8b949e;
-    --accent: #58a6ff;
-    --success: #3fb950;
-    --warning: #d29922;
-    --border: #30363d;
+    --hermes-orange: #F37021;
+    --hermes-brown: #6B4423;
+    --hermes-cream: #FAF6F0;
+    --hermes-gold: #C9A961;
+    --hermes-dark: #2C1810;
+    
+    --bg: var(--hermes-cream);
+    --bg-secondary: #F0EBE3;
+    --text: var(--hermes-dark);
+    --text-muted: #7D6B5D;
+    --accent: var(--hermes-orange);
+    --success: #6B8E23;
+    --warning: var(--hermes-gold);
+    --border: #D4C5B5;
 }
 
 * {
@@ -28,17 +34,19 @@ body {
 header {
     text-align: center;
     padding: 3rem 1rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    background: var(--hermes-orange);
+    color: white;
+    border-bottom: 4px solid var(--hermes-brown);
 }
 
 header h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .tagline {
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.9);
     font-style: italic;
 }
 
@@ -47,13 +55,13 @@ nav {
     justify-content: center;
     gap: 2rem;
     padding: 1rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    background: var(--hermes-brown);
+    border-bottom: 1px solid var(--hermes-dark);
     flex-wrap: wrap;
 }
 
 nav a {
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -61,8 +69,8 @@ nav a {
 }
 
 nav a:hover, nav a.active {
-    color: var(--text);
-    background: var(--border);
+    color: white;
+    background: rgba(255,255,255,0.15);
 }
 
 main {
@@ -73,13 +81,18 @@ main {
 
 section {
     margin-bottom: 3rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(107, 68, 35, 0.1);
+    border: 1px solid var(--border);
 }
 
 h2 {
-    color: var(--accent);
+    color: var(--hermes-orange);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--hermes-gold);
 }
 
 ul {
@@ -96,11 +109,12 @@ ul li:last-child {
 }
 
 a {
-    color: var(--accent);
+    color: var(--hermes-orange);
     text-decoration: none;
 }
 
 a:hover {
+    color: var(--hermes-brown);
     text-decoration: underline;
 }
 
@@ -114,15 +128,16 @@ a:hover {
     display: inline-block;
     margin-top: 1rem;
     padding: 0.75rem 1.5rem;
-    background: var(--accent);
-    color: var(--bg);
+    background: var(--hermes-orange);
+    color: white;
     border-radius: 6px;
     font-weight: bold;
+    transition: all 0.2s;
 }
 
 .btn:hover {
     text-decoration: none;
-    opacity: 0.9;
+    background: var(--hermes-brown);
 }
 
 /* Todo List Styles */
@@ -131,7 +146,7 @@ a:hover {
 }
 
 .todo-list li.progress {
-    color: var(--warning);
+    color: var(--hermes-gold);
 }
 
 .todo-list li.todo {
@@ -144,13 +159,37 @@ a:hover {
     border-radius: 6px;
     font-size: 0.9rem;
     color: var(--text-muted);
+    border: 1px solid var(--border);
 }
 
 footer {
     text-align: center;
     padding: 2rem;
     color: var(--text-muted);
-    border-top: 1px solid var(--border);
+    border-top: 2px solid var(--hermes-gold);
+    background: var(--bg-secondary);
+}
+
+/* Cards and special elements */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--hermes-orange);
+    box-shadow: 0 2px 4px rgba(107, 68, 35, 0.1);
+}
+
+/* Progress bars */
+.progress-bar {
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--hermes-orange), var(--hermes-gold));
+    height: 8px;
 }
 
 /* Responsive */
@@ -166,5 +205,9 @@ footer {
     nav a {
         padding: 0.5rem;
         font-size: 0.9rem;
+    }
+    
+    section {
+        padding: 1rem;
     }
 }
