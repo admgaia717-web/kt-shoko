@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロジェクト管理 | KT's 書庫</title>
+    <style>
+        :root {
+            --mitsubishi-red: #E60012;
+            --mitsubishi-dark: #C4000A;
+            --charcoal: #333333;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --border: #DDDDDD;
+            --success: #28A745;
+            --warning: #FFC107;
+            --info: #17A2B8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", "Hiragino Sans", Arial, sans-serif;
+            background: var(--light-gray);
+            color: var(--charcoal);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: var(--mitsubishi-red);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        header .tagline {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        
+        /* Nav */
+        nav {
+            background: var(--charcoal);
+            padding: 0.75rem 2rem;
+        }
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-right: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        nav a:hover, nav a.active {
+            opacity: 1;
+        }
+        
+        /* Main */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .summary-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--mitsubishi-red);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .summary-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--mitsubishi-red);
+        }
+        .summary-card .label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Project Cards */
+        .project-card {
+            background: var(--white);
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .project-header {
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .project-header h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .project-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-planning { background: var(--info); }
+        .status-progress { background: var(--warning); color: #333; }
+        .status-complete { background: var(--success); }
+        .status-waiting { background: #6c757d; }
+        
+        .project-body {
+            padding: 1.5rem;
+        }
+        .project-desc {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar {
+            background: var(--border);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--mitsubishi-red);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        /* Task List */
+        .task-list {
+            list-style: none;
+        }
+        .task-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+        .task-list .done {
+            color: var(--success);
+            margin-right: 0.5rem;
+        }
+        .task-list .pending {
+            color: var(--border);
+            margin-right: 0.5rem;
+        }
+        .task-list .done + span {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        /* Timeline */
+        .timeline {
+            border-left: 3px solid var(--mitsubishi-red);
+            padding-left: 1.5rem;
+            margin-top: 1rem;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.7rem;
+            top: 0.25rem;
+            width: 10px;
+            height: 10px;
+            background: var(--mitsubishi-red);
+            border-radius: 50%;
+        }
+        .timeline-item.future::before {
+            background: var(--border);
+        }
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        .timeline-content {
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: var(--mitsubishi-red);
+            text-decoration: none;
+        }
+        
+        /* Cost Table */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .cost-table th, .cost-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .cost-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+        }
+        .cost-table .total {
+            font-weight: 700;
+            color: var(--mitsubishi-red);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>◆ PROJECT MANAGEMENT</h1>
+        <p class="tagline">KT Infrastructure Development Plan</p>
+    </header>
+
+    <nav>
+        <a href="index.html">ホーム</a>
+        <a href="dashboard.html">ダッシュボード</a>
+        <a href="wishlist.html">やりたいこと</a>
+        <a href="projects.html" class="active">プロジェクト</a>
+    </nav>
+
+    <div class="container">
+        <!-- Summary -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="number">3</div>
+                <div class="label">進行中プロジェクト</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">¥1,000,000</div>
+                <div class="label">予定投資額</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">25%</div>
+                <div class="label">全体進捗</div>
+            </div>
+            <div class="summary-card">
+                <div class="number">2026 Q1</div>
+                <div class="label">目標完了</div>
+            </div>
+        </div>
+
+        <!-- Project 1: Mac mini Setup -->
+        <div class="project-card">
+            <div class="project-header">
+                <h2>🖥️ Mac mini インフラ構築</h2>
+                <span class="project-status status-planning">計画中</span>
+            </div>
+            <div class="project-body">
+                <p class="project-desc">階戸さん宅に Mac mini を設置し、Clawdbot 2号（子分）を常時稼働。KT宅と60GHz LANで接続。</p>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>進捗</span>
+                        <span>10%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 10%;"></div>
+                    </div>
+                </div>
+
+                <ul class="task-list">
+                    <li><span class="pending">○</span> <span>60GHz LAN 機器選定・購入</span></li>
+                    <li><span class="pending">○</span> <span>60GHz LAN 設置（KT宅 ↔ 階戸宅）</span></li>
+                    <li><span class="pending">○</span> <span>Mac mini KVM設定</span></li>
+                    <li><span class="pending">○</span> <span>Clawdbot 2号インストール</span></li>
+                    <li><span class="pending">○</span> <span>Telegram Bot 2号作成</span></li>
+                    <li><span class="pending">○</span> <span>ローカルLLM（Ollama）導入</span></li>
+                    <li><span class="pending">○</span> <span>動作確認・連携テスト</span></li>
+                </ul>
+
+                <div class="timeline">
+                    <div class="timeline-item future">
+                        <div class="timeline-date">2026年1月〜2月</div>
+                        <div class="timeline-content">60GHz LAN設置</div>
+                    </div>
+                    <div class="timeline-item future">
+                        <div class="timeline-date">2026年2月</div>
+                        <div class="timeline-content">Mac mini + Clawdbot 2号稼働</div>
+                    </div>
+                    <div class="timeline-item future">
+                        <div class="timeline-date">2026年2月〜3月</div>
+                        <div class="timeline-content">ローカルLLM導入・連携</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project 2: 100万円PC -->
+        <div class="project-card">
+            <div class="project-header">
+                <h2>💻 100万円 AIワークステーション</h2>
+                <span class="project-status status-waiting">検討中</span>
+            </div>
+            <div class="project-body">
+                <p class="project-desc">70B級LLMを24時間稼働させる水冷カスタムPC。AI組織の「軍勢の頭脳」として機能。</p>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>進捗</span>
+                        <span>5%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 5%;"></div>
+                    </div>
+                </div>
+
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>パーツ</th>
+                            <th>候補</th>
+                            <th>予算</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CPU</td>
+                            <td>Ryzen 9 7950X</td>
+                            <td>¥80,000</td>
+                        </tr>
+                        <tr>
+                            <td>GPU</td>
+                            <td>RTX 4090（水冷）</td>
+                            <td>¥350,000</td>
+                        </tr>
+                        <tr>
+                            <td>メモリ</td>
+                            <td>128GB DDR5</td>
+                            <td>¥80,000</td>
+                        </tr>
+                        <tr>
+                            <td>ストレージ</td>
+                            <td>NVMe 2TB + 4TB</td>
+                            <td>¥80,000</td>
+                        </tr>
+                        <tr>
+                            <td>水冷システム</td>
+                            <td>カスタムループ</td>
+                            <td>¥150,000</td>
+                        </tr>
+                        <tr>
+                            <td>電源・ケース他</td>
+                            <td>1200W Platinum他</td>
+                            <td>¥100,000</td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2">合計</td>
+                            <td>¥840,000〜</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ul class="task-list" style="margin-top: 1rem;">
+                    <li><span class="pending">○</span> <span>Mac miniでローカルLLM体験</span></li>
+                    <li><span class="pending">○</span> <span>投資額最終決定</span></li>
+                    <li><span class="pending">○</span> <span>パーツ選定・発注</span></li>
+                    <li><span class="pending">○</span> <span>組み立て・水冷配管</span></li>
+                    <li><span class="pending">○</span> <span>OS・LLM環境構築</span></li>
+                    <li><span class="pending">○</span> <span>Clawdbot連携</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Project 3: 独居老人見守り -->
+        <div class="project-card">
+            <div class="project-header">
+                <h2>👴 独居老人見守りシステム</h2>
+                <span class="project-status status-planning">計画中</span>
+            </div>
+            <div class="project-body">
+                <p class="project-desc">ローカルLLMを活用したプライバシー重視の見守りシステム。スマートリング（Oura等）でバイタル監視。</p>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>進捗</span>
+                        <span>5%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 5%;"></div>
+                    </div>
+                </div>
+
+                <ul class="task-list">
+                    <li><span class="done">✓</span> <span>プロジェクト計画策定</span></li>
+                    <li><span class="pending">○</span> <span>インフラ準備（Mac mini）</span></li>
+                    <li><span class="pending">○</span> <span>ローカルLLM導入</span></li>
+                    <li><span class="pending">○</span> <span>対象者選定</span></li>
+                    <li><span class="pending">○</span> <span>デバイス選定（Oura Ring等）</span></li>
+                    <li><span class="pending">○</span> <span>プロトタイプ開発</span></li>
+                    <li><span class="pending">○</span> <span>テスト運用</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Project 4: Clawdbot 2号 -->
+        <div class="project-card">
+            <div class="project-header">
+                <h2>🦞🦞 Clawdbot 2号体制</h2>
+                <span class="project-status status-planning">計画中</span>
+            </div>
+            <div class="project-body">
+                <p class="project-desc">2匹のClawdbotによる分散AI体制。1号（親分/Opus）と2号（子分/ローカルLLM）の連携。</p>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>進捗</span>
+                        <span>15%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 15%;"></div>
+                    </div>
+                </div>
+
+                <ul class="task-list">
+                    <li><span class="done">✓</span> <span>アーキテクチャ設計</span></li>
+                    <li><span class="done">✓</span> <span>役割分担定義</span></li>
+                    <li><span class="pending">○</span> <span>Telegram Bot 2号作成</span></li>
+                    <li><span class="pending">○</span> <span>2号のSOUL.md作成</span></li>
+                    <li><span class="pending">○</span> <span>Mac miniにClawdbot導入</span></li>
+                    <li><span class="pending">○</span> <span>連携プロトコル実装</span></li>
+                    <li><span class="pending">○</span> <span>統合テスト</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><a href="index.html">← KT's 書庫に戻る</a></p>
+        <p style="margin-top: 0.5rem;">最終更新: 2026-01-27</p>
+    </footer>
+</body>
+</html>
