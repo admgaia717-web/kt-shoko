@@ -54,6 +54,27 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
         }
+        .refresh-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+        .update-note {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +87,7 @@
         <a href="index.html">ホーム</a>
         <a href="wishlist.html">やりたいことリスト</a>
         <a href="articles.html">記事</a>
+        <a href="conversations.html">会話履歴</a>
         <a href="usage.html" class="active">使用量</a>
     </nav>
 
@@ -78,63 +100,102 @@
 
         <section>
             <h2>現在の使用状況</h2>
-            <div class="usage-grid">
+            <button class="refresh-btn" onclick="loadUsageData()">🔄 データを更新</button>
+            <span id="loading" style="display:none;">読み込み中...</span>
+            
+            <div class="usage-grid" id="usage-grid">
                 <div class="usage-card">
                     <h3>🔥 現在のセッション</h3>
-                    <p class="reset">リセットまで: 4時間14分</p>
+                    <p class="reset">リセットまで: <span id="session-reset">4時間14分</span></p>
                     <div class="progress-bar">
-                        <div class="progress-fill low" style="width: 15%;"></div>
+                        <div class="progress-fill low" id="session-bar" style="width: 15%;"></div>
                     </div>
-                    <p class="percentage low">15% 使用済み</p>
+                    <p class="percentage low" id="session-pct">15% 使用済み</p>
                 </div>
 
                 <div class="usage-card">
                     <h3>📅 週間制限（全モデル）</h3>
-                    <p class="reset">リセットまで: 20時間14分</p>
+                    <p class="reset">リセットまで: <span id="weekly-reset">20時間14分</span></p>
                     <div class="progress-bar">
-                        <div class="progress-fill medium" style="width: 50%;"></div>
+                        <div class="progress-fill medium" id="weekly-bar" style="width: 50%;"></div>
                     </div>
-                    <p class="percentage medium">50% 使用済み</p>
+                    <p class="percentage medium" id="weekly-pct">50% 使用済み</p>
                 </div>
 
                 <div class="usage-card">
                     <h3>⚡ Sonnet のみ</h3>
-                    <p class="reset">リセットまで: 21時間14分</p>
+                    <p class="reset">リセットまで: <span id="sonnet-reset">21時間14分</span></p>
                     <div class="progress-bar">
-                        <div class="progress-fill low" style="width: 4%;"></div>
+                        <div class="progress-fill low" id="sonnet-bar" style="width: 4%;"></div>
                     </div>
-                    <p class="percentage low">4% 使用済み</p>
+                    <p class="percentage low" id="sonnet-pct">4% 使用済み</p>
                 </div>
+            </div>
+
+            <div class="update-note">
+                <p>💡 <strong>リアルタイム更新について:</strong></p>
+                <p>データはAIが手動で更新します。最新データが必要な場合は、TelegramでAIに「使用量更新して」と伝えてください。</p>
             </div>
         </section>
 
-        <section>
-            <h2>使用履歴</h2>
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <th style="text-align: left; padding: 0.5rem;">日時</th>
-                        <th style="text-align: left; padding: 0.5rem;">セッション</th>
-                        <th style="text-align: left; padding: 0.5rem;">週間</th>
-                        <th style="text-align: left; padding: 0.5rem;">イベント</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.5rem;">2026-01-27 14:44</td>
-                        <td style="padding: 0.5rem;">15%</td>
-                        <td style="padding: 0.5rem;">50%</td>
-                        <td style="padding: 0.5rem;">スタートレック・コンピュータ構築日</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <p class="last-update">最終更新: 2026-01-27 14:44 JST</p>
+        <p class="last-update">最終更新: <span id="last-update">2026-01-27 14:44 JST</span></p>
     </main>
 
     <footer>
         <p>© 2026 KT & AI | 奈良の文化住宅より</p>
     </footer>
+
+    <script>
+        function getColorClass(pct) {
+            if (pct < 30) return 'low';
+            if (pct < 70) return 'medium';
+            return 'high';
+        }
+
+        function loadUsageData() {
+            document.getElementById('loading').style.display = 'inline';
+            
+            fetch('usage-data.json?t=' + Date.now())
+                .then(response => response.json())
+                .then(data => {
+                    // Session
+                    const sessionClass = getColorClass(data.session.percent);
+                    document.getElementById('session-reset').textContent = data.session.resetIn;
+                    document.getElementById('session-bar').style.width = data.session.percent + '%';
+                    document.getElementById('session-bar').className = 'progress-fill ' + sessionClass;
+                    document.getElementById('session-pct').textContent = data.session.percent + '% 使用済み';
+                    document.getElementById('session-pct').className = 'percentage ' + sessionClass;
+
+                    // Weekly
+                    const weeklyClass = getColorClass(data.weekly.percent);
+                    document.getElementById('weekly-reset').textContent = data.weekly.resetIn;
+                    document.getElementById('weekly-bar').style.width = data.weekly.percent + '%';
+                    document.getElementById('weekly-bar').className = 'progress-fill ' + weeklyClass;
+                    document.getElementById('weekly-pct').textContent = data.weekly.percent + '% 使用済み';
+                    document.getElementById('weekly-pct').className = 'percentage ' + weeklyClass;
+
+                    // Sonnet
+                    const sonnetClass = getColorClass(data.sonnet.percent);
+                    document.getElementById('sonnet-reset').textContent = data.sonnet.resetIn;
+                    document.getElementById('sonnet-bar').style.width = data.sonnet.percent + '%';
+                    document.getElementById('sonnet-bar').className = 'progress-fill ' + sonnetClass;
+                    document.getElementById('sonnet-pct').textContent = data.sonnet.percent + '% 使用済み';
+                    document.getElementById('sonnet-pct').className = 'percentage ' + sonnetClass;
+
+                    // Last update
+                    const updateTime = new Date(data.lastUpdate);
+                    document.getElementById('last-update').textContent = updateTime.toLocaleString('ja-JP');
+
+                    document.getElementById('loading').style.display = 'none';
+                })
+                .catch(err => {
+                    console.error('Error loading usage data:', err);
+                    document.getElementById('loading').textContent = 'エラー';
+                });
+        }
+
+        // Load on page load
+        window.onload = loadUsageData;
+    </script>
 </body>
 </html>

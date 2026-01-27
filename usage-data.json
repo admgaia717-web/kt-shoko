@@ -1,0 +1,15 @@
+{
+  "lastUpdate": "2026-01-27T14:44:00+09:00",
+  "session": {
+    "percent": 15,
+    "resetIn": "4時間14分"
+  },
+  "weekly": {
+    "percent": 50,
+    "resetIn": "20時間14分"
+  },
+  "sonnet": {
+    "percent": 4,
+    "resetIn": "21時間14分"
+  }
+}
