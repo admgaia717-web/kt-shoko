@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加行 | Preliminary Practices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
+        
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4D03F;
+            --deep-red: #8B0000;
+            --maroon: #5D1A1A;
+            --dark-bg: #1A0A0A;
+            --dark-surface: #2D1515;
+            --cream: #FDF5E6;
+            --text: #E8DCC4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        
+        /* Decorative Border Pattern */
+        .tibetan-border {
+            height: 20px;
+            background: linear-gradient(90deg, 
+                var(--gold) 0%, var(--deep-red) 25%, 
+                var(--gold) 50%, var(--deep-red) 75%, 
+                var(--gold) 100%);
+            background-size: 40px 100%;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--maroon) 0%, var(--dark-bg) 100%);
+            text-align: center;
+            padding: 3rem 1rem;
+            position: relative;
+        }
+        
+        .dharma-wheel {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: spin 20s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        header .sanskrit {
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            letter-spacing: 0.2em;
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* Practice Card */
+        .practice-card {
+            background: var(--dark-surface);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+        }
+        
+        .practice-header {
+            background: linear-gradient(90deg, var(--deep-red), var(--maroon));
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .practice-header h2 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .practice-body {
+            padding: 1.5rem;
+        }
+        
+        /* Practice List */
+        .practice-list {
+            list-style: none;
+        }
+        
+        .practice-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .practice-item:last-child {
+            border-bottom: none;
+        }
+        
+        .practice-number {
+            background: var(--gold);
+            color: var(--dark-bg);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .practice-content h3 {
+            color: var(--gold-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .practice-content p {
+            color: var(--text);
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .practice-count {
+            color: var(--gold);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Mantra Section */
+        .mantra-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        
+        .mantra-text {
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mantra-meaning {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+        
+        /* Four Immeasurables */
+        .immeasurables {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .immeasurable-item {
+            background: rgba(139, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .immeasurable-item .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .immeasurable-item h4 {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+        
+        .immeasurable-item p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+        
+        /* Quote */
+        .quote-section {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin: 2rem 0;
+        }
+        
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--cream);
+            margin-bottom: 0.5rem;
+        }
+        
+        .quote-source {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gold);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        
+        footer a {
+            color: var(--gold);
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .immeasurables {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+                letter-spacing: 0.1em;
+            }
+        }
+        
+        /* Ornament */
+        .ornament {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="tibetan-border"></div>
+    
+    <header>
+        <div class="dharma-wheel">☸️</div>
+        <h1>加 行</h1>
+        <p class="sanskrit">སྔོན་འགྲོ། Preliminary Practices</p>
+    </header>
+    
+    <div class="tibetan-border"></div>
+    
+    <main>
+        <!-- Morning Practice -->
+        <div class="practice-card">
+            <div class="practice-header">
+                <h2>🌅 朝の修行</h2>
+            </div>
+            <div class="practice-body">
+                <ol class="practice-list">
+                    <li class="practice-item">
+                        <span class="practice-number">1</span>
+                        <div class="practice-content">
+                            <h3>グル・ヨーガ真言</h3>
+                            <p>根本ラマへの帰依と加持を受ける</p>
+                            <p class="practice-count">🔸 21回</p>
+                        </div>
+                    </li>
+                    <li class="practice-item">
+                        <span class="practice-number">2</span>
+                        <div class="practice-content">
+                            <h3>気功</h3>
+                            <p>身体のエネルギーを調整し、瞑想の準備を整える</p>
+                        </div>
+                    </li>
+                    <li class="practice-item">
+                        <span class="practice-number">3</span>
+                        <div class="practice-content">
+                            <h3>四無量心</h3>
+                            <p>慈・悲・喜・捨の四つの無量心を観想する</p>
+                        </div>
+                    </li>
+                    <li class="practice-item">
+                        <span class="practice-number">4</span>
+                        <div class="practice-content">
+                            <h3>懺悔・随喜・廻向</h3>
+                            <p>過去の業を浄化し、功徳を随喜し、一切衆生に廻向する</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Mantra -->
+        <div class="mantra-box">
+            <p class="mantra-text">ཨོཾ་ཨཱཿཧཱུྃ།</p>
+            <p class="mantra-meaning">オーム・アー・フーン</p>
+        </div>
+        
+        <!-- Four Immeasurables -->
+        <div class="practice-card">
+            <div class="practice-header">
+                <h2>💎 四無量心</h2>
+            </div>
+            <div class="practice-body">
+                <div class="immeasurables">
+                    <div class="immeasurable-item">
+                        <div class="icon">💛</div>
+                        <h4>慈 (Maitrī)</h4>
+                        <p>一切衆生が幸福でありますように</p>
+                    </div>
+                    <div class="immeasurable-item">
+                        <div class="icon">💙</div>
+                        <h4>悲 (Karuṇā)</h4>
+                        <p>一切衆生が苦しみから解放されますように</p>
+                    </div>
+                    <div class="immeasurable-item">
+                        <div class="icon">💚</div>
+                        <h4>喜 (Muditā)</h4>
+                        <p>一切衆生の幸福を喜ぶ</p>
+                    </div>
+                    <div class="immeasurable-item">
+                        <div class="icon">🤍</div>
+                        <h4>捨 (Upekṣā)</h4>
+                        <p>一切衆生に平等な心を持つ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ornament">༄༅། །།</div>
+        
+        <!-- Quote -->
+        <div class="quote-section">
+            <p class="quote-text">「加行なくして本行なし」</p>
+            <p class="quote-source">— チベット密教の教え</p>
+        </div>
+        
+        <!-- Dedication -->
+        <div class="practice-card">
+            <div class="practice-header">
+                <h2>🙏 廻向偈</h2>
+            </div>
+            <div class="practice-body">
+                <p style="text-align: center; line-height: 2.2;">
+                    此の功徳を以って<br>
+                    普く一切に及ぼし<br>
+                    我等と衆生と<br>
+                    皆共に仏道を成ぜん
+                </p>
+            </div>
+        </div>
+        
+        <div class="ornament">༔</div>
+    </main>
+    
+    <div class="tibetan-border"></div>
+    
+    <footer>
+        <p>སརྦ་མངྒལཾ།</p>
+        <p style="margin-top: 0.5rem;">一切吉祥</p>
+        <p style="margin-top: 1rem;"><a href="index.html">← KT's 書庫</a></p>
+    </footer>
+</body>
+</html>
