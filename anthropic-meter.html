@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthropic Meter — Claude MAX 使用量モニター</title>
+    <meta name="description" content="Claude MAX プランの使用量をリアルタイムで可視化するオープンツール">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-secondary: #161b22;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #d4a574;
+            --success: #3fb950;
+            --warning: #d29922;
+            --border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #1a1a2e 100%);
+            color: var(--text);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #d4a574, #f0c27b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .tagline {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+        .meter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .meter-card {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .meter-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        .meter-card .reset {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .gauge {
+            position: relative;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gauge-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--gauge-color, var(--success)) calc(var(--gauge-pct, 0) * 3.6deg),
+                var(--border) 0deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gauge-inner {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .gauge-inner.low { color: var(--success); }
+        .gauge-inner.medium { color: var(--warning); }
+        .gauge-inner.high { color: #f85149; }
+        .info-section {
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-section h2 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+        .refresh-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .refresh-btn {
+            background: linear-gradient(90deg, #d4a574, #f0c27b);
+            color: #0d1117;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3);
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: var(--accent);
+        }
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        .last-update {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>📊 Anthropic Meter</h1>
+            <p class="tagline">Claude MAX 使用量モニター <span class="badge">LIVE</span></p>
+        </div>
+
+        <div class="refresh-container">
+            <button class="refresh-btn" onclick="loadUsageData()">🔄 データを更新</button>
+        </div>
+
+        <div class="meter-grid">
+            <div class="meter-card">
+                <h3>🔥 セッション使用量</h3>
+                <p class="reset">リセットまで: <span id="session-reset">--</span></p>
+                <div class="gauge">
+                    <div class="gauge-circle" id="session-gauge" style="--gauge-pct: 0; --gauge-color: var(--success);">
+                        <div class="gauge-inner low" id="session-inner">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="meter-card">
+                <h3>📅 週間使用量（全モデル）</h3>
+                <p class="reset">リセットまで: <span id="weekly-reset">--</span></p>
+                <div class="gauge">
+                    <div class="gauge-circle" id="weekly-gauge" style="--gauge-pct: 0; --gauge-color: var(--warning);">
+                        <div class="gauge-inner medium" id="weekly-inner">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="meter-card">
+                <h3>⚡ Sonnet 専用枠</h3>
+                <p class="reset">リセットまで: <span id="sonnet-reset">--</span></p>
+                <div class="gauge">
+                    <div class="gauge-circle" id="sonnet-gauge" style="--gauge-pct: 0; --gauge-color: var(--success);">
+                        <div class="gauge-inner low" id="sonnet-inner">--%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="last-update">最終更新: <span id="last-update">--</span></p>
+
+        <div class="info-section">
+            <h2>📖 これは何？</h2>
+            <p>Claude MAX（$100/月）プランの使用量をリアルタイムで可視化するツールです。</p>
+            <p><strong>セッション:</strong> 短時間での使用制限（数時間でリセット）</p>
+            <p><strong>週間（全モデル）:</strong> Opus/Sonnet/Haiku合計の週間上限</p>
+            <p><strong>Sonnet専用:</strong> Sonnetモデルの別枠（軽いタスク向け）</p>
+        </div>
+
+        <div class="info-section">
+            <h2>🛠️ 技術スタック</h2>
+            <p><strong>Clawdbot</strong> — オープンソースのAIゲートウェイ</p>
+            <p><strong>Claude Opus 4.5</strong> — Anthropic社のLLM</p>
+            <p><strong>GitHub Pages</strong> — 静的ホスティング</p>
+            <p>データはAIが手動で更新し、JSONファイルで配信しています。</p>
+        </div>
+
+        <div class="footer">
+            <p>Made with 🦞 by KT & AI</p>
+            <p><a href="index.html">← KT's 書庫に戻る</a></p>
+        </div>
+    </div>
+
+    <script>
+        function getColorClass(pct) {
+            if (pct < 30) return 'low';
+            if (pct < 70) return 'medium';
+            return 'high';
+        }
+
+        function getColorVar(pct) {
+            if (pct < 30) return 'var(--success)';
+            if (pct < 70) return 'var(--warning)';
+            return '#f85149';
+        }
+
+        function loadUsageData() {
+            fetch('usage-data.json?t=' + Date.now())
+                .then(response => response.json())
+                .then(data => {
+                    // Session
+                    const sessionClass = getColorClass(data.session.percent);
+                    document.getElementById('session-reset').textContent = data.session.resetIn;
+                    document.getElementById('session-gauge').style.setProperty('--gauge-pct', data.session.percent);
+                    document.getElementById('session-gauge').style.setProperty('--gauge-color', getColorVar(data.session.percent));
+                    document.getElementById('session-inner').textContent = data.session.percent + '%';
+                    document.getElementById('session-inner').className = 'gauge-inner ' + sessionClass;
+
+                    // Weekly
+                    const weeklyClass = getColorClass(data.weekly.percent);
+                    document.getElementById('weekly-reset').textContent = data.weekly.resetIn;
+                    document.getElementById('weekly-gauge').style.setProperty('--gauge-pct', data.weekly.percent);
+                    document.getElementById('weekly-gauge').style.setProperty('--gauge-color', getColorVar(data.weekly.percent));
+                    document.getElementById('weekly-inner').textContent = data.weekly.percent + '%';
+                    document.getElementById('weekly-inner').className = 'gauge-inner ' + weeklyClass;
+
+                    // Sonnet
+                    const sonnetClass = getColorClass(data.sonnet.percent);
+                    document.getElementById('sonnet-reset').textContent = data.sonnet.resetIn;
+                    document.getElementById('sonnet-gauge').style.setProperty('--gauge-pct', data.sonnet.percent);
+                    document.getElementById('sonnet-gauge').style.setProperty('--gauge-color', getColorVar(data.sonnet.percent));
+                    document.getElementById('sonnet-inner').textContent = data.sonnet.percent + '%';
+                    document.getElementById('sonnet-inner').className = 'gauge-inner ' + sonnetClass;
+
+                    // Last update
+                    const updateTime = new Date(data.lastUpdate);
+                    document.getElementById('last-update').textContent = updateTime.toLocaleString('ja-JP');
+                })
+                .catch(err => console.error('Error:', err));
+        }
+
+        window.onload = loadUsageData;
+    </script>
+</body>
+</html>
