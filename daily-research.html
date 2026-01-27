@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デイリーリサーチ | Daily Research</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --red: #f85149;
+            --orange: #db6d28;
+            --purple: #a371f7;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        
+        .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+        
+        .date-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .date-nav a {
+            color: var(--accent);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        
+        .date-nav a.active {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section h2 .icon { font-size: 1.5rem; }
+        
+        .ai-section h2 { color: var(--purple); }
+        .crypto-section h2 { color: var(--orange); }
+        .economy-section h2 { color: var(--green); }
+        .automation-section h2 { color: var(--accent); }
+        
+        .news-item {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .news-item:last-child { margin-bottom: 0; }
+        
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-content {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+        .news-source {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        
+        .price-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            border-radius: 4px;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-up { color: var(--green); }
+        .price-down { color: var(--red); }
+        
+        .update-time {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+        
+        .no-data {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📰 デイリーリサーチ</h1>
+        <p class="subtitle">Clawdbot による夜間自動調査レポート</p>
+        
+        <div class="date-nav">
+            <a href="#" class="active">2026-01-28</a>
+            <!-- 過去の日付はここに追加 -->
+        </div>
+        
+        <!-- AI セクション -->
+        <div class="section ai-section">
+            <h2><span class="icon">🤖</span> AI 最新動向</h2>
+            <div class="news-item">
+                <div class="news-title">調査予定</div>
+                <div class="news-content">次回夜間リサーチで更新予定。Claude, GPT, Gemini, オープンソースLLM の動向を調査。</div>
+            </div>
+        </div>
+        
+        <!-- 暗号通貨セクション -->
+        <div class="section crypto-section">
+            <h2><span class="icon">₿</span> 暗号通貨</h2>
+            
+            <h3 style="margin: 1rem 0 0.5rem; font-size: 1rem;">Monero (XMR)</h3>
+            <div class="news-item">
+                <div class="news-title">調査予定</div>
+                <div class="news-content">次回夜間リサーチで更新予定。開発動向、規制、価格分析。</div>
+            </div>
+            
+            <h3 style="margin: 1rem 0 0.5rem; font-size: 1rem;">Bitcoin (BTC)</h3>
+            <div class="news-item">
+                <div class="news-title">調査予定</div>
+                <div class="news-content">次回夜間リサーチで更新予定。技術動向、ETF、規制。</div>
+            </div>
+        </div>
+        
+        <!-- 世界経済セクション -->
+        <div class="section economy-section">
+            <h2><span class="icon">🌍</span> 世界経済</h2>
+            <div class="news-item">
+                <div class="news-title">調査予定</div>
+                <div class="news-content">次回夜間リサーチで更新予定。日本、米国、EU、中国の経済動向。</div>
+            </div>
+        </div>
+        
+        <!-- 自動化セクション -->
+        <div class="section automation-section">
+            <h2><span class="icon">⚙️</span> Clawdbot 自動化 Tips</h2>
+            <div class="news-item">
+                <div class="news-title">Keyboard Maestro 連携</div>
+                <div class="news-content">osascript の直接キー操作がブロックされても、KM マクロ経由で迂回可能。KM は既にアクセシビリティ権限を持っているため、AppleScript から KM Engine に命令を送ればUI操作ができる。</div>
+                <div class="news-source">検証済み: 2026-01-28</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">tccutil でバイナリ追加</div>
+                <div class="news-content">Homebrew の tccutil (Python版) を使えば、sudo でコマンドラインバイナリをアクセシビリティに追加可能。ただし Full Disk Access が Terminal に必要。</div>
+                <div class="news-source">参照: github.com/jacobsalmela/tccutil</div>
+            </div>
+        </div>
+        
+        <p class="update-time">最終更新: 2026-01-28 04:56 JST（初期設定）</p>
+    </div>
+</body>
+</html>

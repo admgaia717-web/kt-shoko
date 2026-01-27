@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パソコン自動化プロジェクト | PC Automation Project</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --red: #f85149;
+            --purple: #a371f7;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+        
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+        
+        .status-done { background: var(--green); color: #000; }
+        .status-progress { background: var(--yellow); color: #000; }
+        .status-todo { background: var(--border); color: var(--text); }
+        .status-blocked { background: var(--red); color: #fff; }
+        
+        .task-list { list-style: none; }
+        
+        .task-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .task-list li:last-child { border-bottom: none; }
+        
+        .check { color: var(--green); }
+        .pending { color: var(--yellow); }
+        .blocked { color: var(--red); }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--accent));
+            transition: width 0.3s;
+        }
+        
+        .tips-section {
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tips-section h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .tip-item {
+            background: var(--bg);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tip-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .research-log {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .update-time {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th { color: var(--text-muted); font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 パソコン自動化プロジェクト</h1>
+        <p class="subtitle">目標: Clawdbot が Ownerの助けなしにパソコンを完全に操作できるようにする</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 35%;"></div>
+        </div>
+        <p style="text-align: center; color: var(--text-muted);">全体進捗: 35%</p>
+        
+        <!-- 今日のTips -->
+        <div class="tips-section">
+            <h2>💡 今日の自動化Tips (2026-01-28)</h2>
+            <div class="tip-item">
+                <strong>Keyboard Maestro 連携</strong>
+                <p>osascript の直接キー操作が権限でブロックされても、KM マクロ経由で迂回可能。KM は既にアクセシビリティ権限を持っているため、AppleScript から KM Engine に命令を送ればUI操作ができる。</p>
+                <p class="tip-date">検証済み: 2026-01-28</p>
+            </div>
+            <div class="tip-item">
+                <strong>tccutil でバイナリ追加</strong>
+                <p>Homebrew の tccutil (Python版) を使えば、sudo でコマンドラインバイナリをアクセシビリティに追加可能。ただし Full Disk Access が Terminal に必要。</p>
+                <p class="tip-date">参照: jacobsalmela/tccutil</p>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <!-- 完了タスク -->
+            <div class="card">
+                <h2>✅ 完了 <span class="status-badge status-done">Done</span></h2>
+                <ul class="task-list">
+                    <li><span class="check">✓</span> Chrome拡張 (Clawdbot Browser Relay) インストール</li>
+                    <li><span class="check">✓</span> clawd ブラウザプロファイル起動</li>
+                    <li><span class="check">✓</span> Terminal に Full Disk Access 付与</li>
+                    <li><span class="check">✓</span> Keyboard Maestro マクロ作成 (CB Escape, CB Return, CB Tab)</li>
+                    <li><span class="check">✓</span> tccutil インストール (Homebrew)</li>
+                    <li><span class="check">✓</span> コンテキスト保存システム構築</li>
+                </ul>
+            </div>
+            
+            <!-- 進行中 -->
+            <div class="card">
+                <h2>🔄 進行中 <span class="status-badge status-progress">In Progress</span></h2>
+                <ul class="task-list">
+                    <li><span class="pending">◐</span> osascript アクセシビリティ権限（再起動後確認必要）</li>
+                    <li><span class="pending">◐</span> Chrome タブ自動アタッチ（KM マクロで座標特定中）</li>
+                </ul>
+            </div>
+            
+            <!-- 未着手 -->
+            <div class="card">
+                <h2>📋 未着手 <span class="status-badge status-todo">Todo</span></h2>
+                <ul class="task-list">
+                    <li><span class="blocked">○</span> スクリーンキャプチャ権限</li>
+                    <li><span class="blocked">○</span> Input Monitoring 権限</li>
+                    <li><span class="blocked">○</span> 自動ダイアログ処理</li>
+                    <li><span class="blocked">○</span> ファイルシステム自動操作</li>
+                    <li><span class="blocked">○</span> 音声入力/出力 (ElevenLabs)</li>
+                </ul>
+            </div>
+            
+            <!-- ブロッカー -->
+            <div class="card">
+                <h2>🚫 ブロッカー <span class="status-badge status-blocked">Blocked</span></h2>
+                <ul class="task-list">
+                    <li><span class="blocked">✗</span> macOS SIP (System Integrity Protection) が TCC データベース直接編集を制限</li>
+                    <li><span class="blocked">✗</span> osascript のキー操作が権限付与後も機能しない（要再起動?）</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 権限マトリックス -->
+        <div class="card">
+            <h2>🔐 macOS 権限マトリックス</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>権限</th>
+                        <th>目的</th>
+                        <th>設定場所</th>
+                        <th>状態</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Accessibility</td>
+                        <td>UI操作、キー入力シミュレーション</td>
+                        <td>プライバシーとセキュリティ > アクセシビリティ</td>
+                        <td><span class="status-badge status-progress">一部</span></td>
+                    </tr>
+                    <tr>
+                        <td>Full Disk Access</td>
+                        <td>ファイル読み書き、TCC編集</td>
+                        <td>プライバシーとセキュリティ > フルディスクアクセス</td>
+                        <td><span class="status-badge status-done">Terminal済</span></td>
+                    </tr>
+                    <tr>
+                        <td>Screen Recording</td>
+                        <td>スクリーンショット、画面認識</td>
+                        <td>プライバシーとセキュリティ > 画面収録</td>
+                        <td><span class="status-badge status-todo">未設定</span></td>
+                    </tr>
+                    <tr>
+                        <td>Input Monitoring</td>
+                        <td>キーボードイベント監視</td>
+                        <td>プライバシーとセキュリティ > 入力監視</td>
+                        <td><span class="status-badge status-todo">未設定</span></td>
+                    </tr>
+                    <tr>
+                        <td>Automation</td>
+                        <td>他アプリの自動制御</td>
+                        <td>プライバシーとセキュリティ > オートメーション</td>
+                        <td><span class="status-badge status-progress">一部</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- リサーチログ -->
+        <div class="card">
+            <h2>📚 リサーチログ</h2>
+            <div class="research-log">
+                <p><strong>2026-01-28:</strong> Clawdbot macOS 自動化の権限設定について調査。tccutil (jacobsalmela版) で CLI バイナリを追加可能。M-series Mac 推奨。ElevenLabs で音声制御可能。awesome-clawdbot-skills リポジトリにスキル例あり。</p>
+            </div>
+        </div>
+        
+        <!-- 参考リンク -->
+        <div class="card">
+            <h2>🔗 参考リンク</h2>
+            <ul class="task-list">
+                <li>📖 <a href="https://docs.clawd.bot" style="color: var(--accent);">Clawdbot 公式ドキュメント</a></li>
+                <li>💬 <a href="https://discord.com/invite/clawd" style="color: var(--accent);">Clawdbot Discord コミュニティ</a></li>
+                <li>🛠️ <a href="https://github.com/VoltAgent/awesome-clawdbot-skills" style="color: var(--accent);">awesome-clawdbot-skills</a></li>
+                <li>📝 <a href="https://github.com/jacobsalmela/tccutil" style="color: var(--accent);">tccutil (TCC 権限管理)</a></li>
+            </ul>
+        </div>
+        
+        <p class="update-time">最終更新: 2026-01-28 05:00 JST</p>
+        
+        <!-- ローカルリンク -->
+        <div class="card">
+            <h2>📁 詳細データ（ローカル）</h2>
+            <ul class="task-list">
+                <li>📄 <a href="file:///Users/user/clawd/context/sessions/" style="color: var(--accent);">セッション記録</a></li>
+                <li>📄 <a href="file:///Users/user/clawd/memory/" style="color: var(--accent);">日次メモ</a></li>
+                <li>📄 <a href="file:///Users/user/clawd/MEMORY.md" style="color: var(--accent);">MEMORY.md</a></li>
+                <li>📄 <a href="file:///Users/user/clawd/HEARTBEAT.md" style="color: var(--accent);">HEARTBEAT.md</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
