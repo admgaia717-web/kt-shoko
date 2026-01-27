@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>note分析 | KT's 書庫</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .chart-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .bar-label {
+            width: 120px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .bar-track {
+            flex: 1;
+            background: var(--border);
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            padding-left: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--bg);
+            font-weight: bold;
+        }
+        .insights-list {
+            list-style: none;
+        }
+        .insights-list li {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+        .insights-list li:last-child {
+            border-bottom: none;
+        }
+        .insight-icon {
+            font-size: 1.5rem;
+        }
+        .insight-content h4 {
+            margin-bottom: 0.25rem;
+        }
+        .insight-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .article-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .article-table th, .article-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .article-table th {
+            color: var(--text-muted);
+            font-weight: normal;
+            font-size: 0.85rem;
+        }
+        .article-table tr:hover {
+            background: var(--bg-secondary);
+        }
+        .tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.25rem;
+        }
+        .recommendation {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .recommendation h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📈 note分析</h1>
+        <p class="tagline">KeiTy (@famous_prawn2009) のパフォーマンス分析</p>
+    </header>
+
+    <nav>
+        <a href="index.html">ホーム</a>
+        <a href="dashboard.html">ダッシュボード</a>
+        <a href="projects.html">プロジェクト</a>
+        <a href="note-analytics.html" class="active">note分析</a>
+    </nav>
+
+    <main>
+        <!-- Stats Overview -->
+        <div class="analytics-grid">
+            <div class="stat-card">
+                <div class="stat-number">18</div>
+                <div class="stat-label">総記事数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">~45</div>
+                <div class="stat-label">総スキ数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">フォロワー</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2.5</div>
+                <div class="stat-label">平均スキ/記事</div>
+            </div>
+        </div>
+
+        <!-- Category Distribution -->
+        <div class="chart-container">
+            <h2>📊 カテゴリ分布</h2>
+            <div class="bar-chart" style="margin-top: 1rem;">
+                <div class="bar-item">
+                    <span class="bar-label">サイファーパンク</span>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 35%;">6記事</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">AI/テクノロジー</span>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 40%;">7記事</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">暗号通貨</span>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 20%;">3記事</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">ライフスタイル</span>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: 10%;">2記事</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Articles -->
+        <div class="chart-container">
+            <h2>🏆 人気記事 TOP 5</h2>
+            <table class="article-table" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>記事</th>
+                        <th>スキ</th>
+                        <th>日付</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>📌 次世代の人類はサイファーパンクたれ</td>
+                        <td><strong>10</strong></td>
+                        <td>10日前</td>
+                    </tr>
+                    <tr>
+                        <td>１月２１日暗号通貨の試練と希望</td>
+                        <td><strong>5</strong></td>
+                        <td>6日前</td>
+                    </tr>
+                    <tr>
+                        <td>Siriが本当に使えたら、こうなる──Clawdbotという革命</td>
+                        <td><strong>3</strong></td>
+                        <td>2日前</td>
+                    </tr>
+                    <tr>
+                        <td>satoshi~サイファーキャット英雄列伝（其の三）</td>
+                        <td><strong>3</strong></td>
+                        <td>6日前</td>
+                    </tr>
+                    <tr>
+                        <td>暗号と慈悲：サイファーパンクと菩薩道に流れる同じ川</td>
+                        <td><strong>3</strong></td>
+                        <td>6日前</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Insights -->
+        <div class="chart-container">
+            <h2>💡 インサイト</h2>
+            <ul class="insights-list">
+                <li>
+                    <span class="insight-icon">🔥</span>
+                    <div class="insight-content">
+                        <h4>更新頻度が高い</h4>
+                        <p>1週間で17記事は非常にハイペース。noteアルゴリズムは更新頻度を重視するため有利。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">📌</span>
+                    <div class="insight-content">
+                        <h4>固定記事が効果的</h4>
+                        <p>「次世代の人類はサイファーパンクたれ」が最多スキ。マニフェスト的な記事を固定するのは正解。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">📚</span>
+                    <div class="insight-content">
+                        <h4>シリーズ化が強い</h4>
+                        <p>「サイファーキャット英雄列伝」シリーズは継続読者を獲得。連載形式は有効。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">🎯</span>
+                    <div class="insight-content">
+                        <h4>ニッチだが深い</h4>
+                        <p>サイファーパンク×仏教×AIという独自の切り口。競合が少なく、熱心なファンを獲得しやすい。</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Algorithm Tips -->
+        <div class="chart-container">
+            <h2>🧮 noteアルゴリズム攻略</h2>
+            <ul class="insights-list">
+                <li>
+                    <span class="insight-icon">⏰</span>
+                    <div class="insight-content">
+                        <h4>投稿時間の最適化</h4>
+                        <p>平日 7:00-9:00 / 12:00-13:00 / 20:00-22:00 が閲覧ピーク。初速が重要。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">🏷️</span>
+                    <div class="insight-content">
+                        <h4>タグ戦略</h4>
+                        <p>「#AI」「#ChatGPT」「#Claude」など検索されやすいタグを活用。5-10個が最適。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">💬</span>
+                    <div class="insight-content">
+                        <h4>エンゲージメント重視</h4>
+                        <p>スキだけでなくコメント・シェアも重要。記事末で質問を投げかけると効果的。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="insight-icon">🔗</span>
+                    <div class="insight-content">
+                        <h4>内部リンク</h4>
+                        <p>過去記事への内部リンクを張ると、回遊率UP → 露出増加。</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendation">
+            <h3>🚀 成長のための提案</h3>
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li><strong>有料記事の拡大</strong> — フライパン論は¥300で売れてる。ノウハウ系は有料化のチャンス</li>
+                <li><strong>マガジン整理</strong> — シリーズをマガジンにまとめると発見されやすい</li>
+                <li><strong>Twitter連携強化</strong> — @aipraxislab からの流入を増やす</li>
+                <li><strong>Clawdbot記事を推す</strong> — 「導入顛末」「革命」は実用系で伸びる可能性</li>
+                <li><strong>100記事目標</strong> — noteは量がものを言う。3ヶ月で100記事を目指す</li>
+            </ol>
+        </div>
+
+        <p class="last-update" style="margin-top: 2rem;">最終更新: 2026-01-27 | データは手動更新</p>
+    </main>
+
+    <footer>
+        <p>© 2026 KT & AI | <a href="https://note.com/famous_prawn2009">note.com/famous_prawn2009</a></p>
+    </footer>
+</body>
+</html>
