@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍳 Cooking Cypherpunk | 📚 書庫</title>
+    <style>
+        :root {
+            --accent: #FF6B35;
+            --accent-dark: #E55A2B;
+            --charcoal: #333333;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --border: #DDDDDD;
+            --success: #28A745;
+            --code-bg: #1a1a2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", "Hiragino Sans", Arial, sans-serif;
+            background: var(--light-gray);
+            color: var(--charcoal);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        header .tagline {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        header .philosophy {
+            margin-top: 1.5rem;
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Nav */
+        nav {
+            background: var(--charcoal);
+            padding: 0.75rem 2rem;
+        }
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-right: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        nav a:hover { opacity: 1; }
+        
+        /* Main */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* Section */
+        section {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        section h2 {
+            color: var(--accent);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+        section h3 {
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+        section p {
+            margin-bottom: 1rem;
+        }
+        section ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Quote */
+        .manifesto {
+            background: var(--code-bg);
+            color: #00ff88;
+            padding: 2rem;
+            border-radius: 8px;
+            font-family: "SF Mono", "Monaco", monospace;
+            margin: 2rem 0;
+        }
+        .manifesto p {
+            margin-bottom: 1rem;
+        }
+        .manifesto .signature {
+            text-align: right;
+            color: #888;
+            margin-top: 1.5rem;
+        }
+        
+        /* Architecture */
+        .architecture {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: "SF Mono", "Monaco", monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+        
+        /* Timeline */
+        .phase {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .phase-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .phase-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            background: var(--light-gray);
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        /* Links */
+        a.inline-link {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent);
+        }
+        a.inline-link:hover {
+            border-bottom-style: solid;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🍳 Cooking Cypherpunk</h1>
+        <p class="tagline">料理アカシックレコード構築計画</p>
+        <p class="philosophy">"Cypherpunks write code. Cooking cypherpunks build open recipe databases."</p>
+    </header>
+
+    <nav>
+        <a href="index.html">ホーム</a>
+        <a href="projects.html">プロジェクト</a>
+        <a href="automation-project.html">自動化計画</a>
+    </nav>
+
+    <div class="container">
+        <!-- Manifesto -->
+        <div class="manifesto">
+            <p>// COOKING CYPHERPUNK MANIFESTO</p>
+            <p>レシピは人類共有の知識である。</p>
+            <p>材料と手順に著作権はない。それは事実であり、アイデアだ。</p>
+            <p>美味しいものをできるだけ多くの人に届ける。</p>
+            <p>それが善行であるなら、その機会を最大化する。</p>
+            <p>AIで知識を解放し、人をみんな幸せにする。</p>
+            <p class="signature">— 2026.01.28</p>
+        </div>
+
+        <!-- Vision -->
+        <section>
+            <h2>🎯 ビジョン</h2>
+            <p><strong>料理のアカシックレコード</strong>を構築する。世界中のレシピを収集・構造化し、オープンなデータベースとして解放する。</p>
+            
+            <h3>なぜやるのか</h3>
+            <ul>
+                <li><strong>知識の囲い込みへの抵抗</strong> — クックパッドもクラシルもユーザーを囲い込んでプレミアム課金。レシピは本来、人類共有の財産。</li>
+                <li><strong>AI時代のコンテンツ基盤</strong> — 2027年には構造化データから動画・漫画を自動生成できる。今仕込むレシピDBが「コンテンツ工場の燃料」になる。</li>
+                <li><strong>サイファーパンク精神の実践</strong> — Moneroで金融の自由を。レシピDBで料理の自由を。同じ思想、違うドメイン。</li>
+            </ul>
+        </section>
+
+        <!-- How -->
+        <section>
+            <h2>⚙️ 仕組み</h2>
+            <div class="architecture">
+┌─────────────────────────────────────────────────────────┐
+│                 COOKING CYPHERPUNK SYSTEM               │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   INPUT (Sources)                                       │
+│   ├── YouTube料理動画（無限ソース）                      │
+│   ├── 料理ブログ・レシピサイト                           │
+│   └── コミュニティ投稿                                   │
+│                                                         │
+│   PROCESSING                                            │
+│   ├── Whisper → 動画を文字起こし                         │
+│   ├── LLM → レシピ情報抽出・標準化                       │
+│   ├── 重複検出 → 類似レシピ統合                          │
+│   └── メタデータ付与（難易度/時間/栄養/文化圏）           │
+│                                                         │
+│   OUTPUT (Database)                                     │
+│   ├── 構造化JSON/SQLite                                 │
+│   ├── 全文検索API                                       │
+│   └── オープンライセンス公開                             │
+│                                                         │
+│   GENERATION (2027〜)                                   │
+│   ├── Sora/Veo → 料理動画自動生成                        │
+│   ├── 画像AI → 料理漫画自動生成                          │
+│   ├── TTS → ナレーション生成                             │
+│   └── 多言語展開                                        │
+│                                                         │
+└─────────────────────────────────────────────────────────┘</div>
+
+            <h3>著作権の整理</h3>
+            <ul>
+                <li><strong>著作権なし</strong>：材料リスト、分量、手順、温度、時間（事実・アイデア）</li>
+                <li><strong>著作権あり</strong>：動画映像、写真、独自の文章表現</li>
+            </ul>
+            <p>→ 動画から<strong>情報だけ抽出</strong>し、自分のフォーマットで再構成。元の「表現」は一切使わない。完全に合法。</p>
+        </section>
+
+        <!-- Roadmap -->
+        <section>
+            <h2>📅 ロードマップ</h2>
+            
+            <div class="phase">
+                <div class="phase-title">Phase 1: MVP（2026 Q1）</div>
+                <div class="phase-date">2026年1月〜3月</div>
+                <ul>
+                    <li>特定ジャンル（和食 or 家庭料理）で100レシピ収集</li>
+                    <li>Whisper + LLM パイプライン構築</li>
+                    <li>シンプルな検索サイト公開</li>
+                    <li>データスキーマ確定</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-title">Phase 2: 自動化（2026 Q2）</div>
+                <div class="phase-date">2026年4月〜6月</div>
+                <ul>
+                    <li>YouTube自動取り込みパイプライン</li>
+                    <li>1,000レシピ達成</li>
+                    <li>重複検出・統合アルゴリズム</li>
+                    <li>API公開</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-title">Phase 3: スケール（2026 Q3-Q4）</div>
+                <div class="phase-date">2026年7月〜12月</div>
+                <ul>
+                    <li>10,000レシピ達成</li>
+                    <li>多言語対応（英語、中国語）</li>
+                    <li>材料からの逆引き検索</li>
+                    <li>栄養計算・代替材料提案</li>
+                    <li>収益化（広告・アフィリエイト）</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-title">Phase 4: コンテンツ生成（2027〜）</div>
+                <div class="phase-date">2027年〜</div>
+                <ul>
+                    <li>AI動画生成（Sora等）で料理動画自動作成</li>
+                    <li>AI画像生成で料理漫画シリーズ</li>
+                    <li>YouTubeチャンネル / Kindle出版</li>
+                    <li>完全自走するコンテンツファクトリー</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Status -->
+        <section>
+            <h2>📊 現在のステータス</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">0</div>
+                    <div class="label">収集レシピ数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">計画中</div>
+                    <div class="label">フェーズ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">2026 Q1</div>
+                    <div class="label">MVP目標</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">¥0</div>
+                    <div class="label">初期投資</div>
+                </div>
+            </div>
+            <p><strong>次のアクション:</strong> データスキーマ設計、最初の10レシピで概念実証</p>
+        </section>
+
+        <!-- Philosophy -->
+        <section>
+            <h2>🔥 思想的背景</h2>
+            <p>このプロジェクトは単なるレシピサイトではない。<strong>情報の自由化</strong>という思想の実践である。</p>
+            
+            <h3>サイファーパンク精神</h3>
+            <ul>
+                <li>情報は自由であるべき</li>
+                <li>中央集権的プラットフォームへの抵抗</li>
+                <li>技術で個人をエンパワーする</li>
+                <li>コードを書いて世界を変える</li>
+            </ul>
+            
+            <p>料理知識の囲い込みは、出版社やプラットフォームの都合。レシピそのものは著作権で保護されない以上、それを収集・構造化・解放することは<strong>静かな反乱</strong>である。</p>
+            
+            <p>Moneroが金融プライバシーを守るように、このプロジェクトは料理知識へのアクセスを民主化する。</p>
+        </section>
+    </div>
+
+    <footer>
+        <p><a href="projects.html">← プロジェクト一覧に戻る</a></p>
+        <p style="margin-top: 0.5rem;">Created: 2026-01-28</p>
+    </footer>
+</body>
+</html>
