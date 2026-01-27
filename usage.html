@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用量 | KT's 書庫</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .usage-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .usage-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .usage-card .reset {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .progress-bar {
+            background: var(--border);
+            border-radius: 10px;
+            height: 24px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .progress-fill.low { background: var(--success); }
+        .progress-fill.medium { background: var(--warning); }
+        .progress-fill.high { background: #f85149; }
+        .percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .percentage.low { color: var(--success); }
+        .percentage.medium { color: var(--warning); }
+        .percentage.high { color: #f85149; }
+        .last-update {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📊 使用量トラッカー</h1>
+        <p class="tagline">Claude MAX 使用状況</p>
+    </header>
+
+    <nav>
+        <a href="index.html">ホーム</a>
+        <a href="wishlist.html">やりたいことリスト</a>
+        <a href="articles.html">記事</a>
+        <a href="usage.html" class="active">使用量</a>
+    </nav>
+
+    <main>
+        <section>
+            <h2>プラン情報</h2>
+            <p>Claude MAX（マックスプラン）- $100/月</p>
+            <p>5倍の使用量制限</p>
+        </section>
+
+        <section>
+            <h2>現在の使用状況</h2>
+            <div class="usage-grid">
+                <div class="usage-card">
+                    <h3>🔥 現在のセッション</h3>
+                    <p class="reset">リセットまで: 4時間14分</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill low" style="width: 15%;"></div>
+                    </div>
+                    <p class="percentage low">15% 使用済み</p>
+                </div>
+
+                <div class="usage-card">
+                    <h3>📅 週間制限（全モデル）</h3>
+                    <p class="reset">リセットまで: 20時間14分</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" style="width: 50%;"></div>
+                    </div>
+                    <p class="percentage medium">50% 使用済み</p>
+                </div>
+
+                <div class="usage-card">
+                    <h3>⚡ Sonnet のみ</h3>
+                    <p class="reset">リセットまで: 21時間14分</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill low" style="width: 4%;"></div>
+                    </div>
+                    <p class="percentage low">4% 使用済み</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>使用履歴</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <th style="text-align: left; padding: 0.5rem;">日時</th>
+                        <th style="text-align: left; padding: 0.5rem;">セッション</th>
+                        <th style="text-align: left; padding: 0.5rem;">週間</th>
+                        <th style="text-align: left; padding: 0.5rem;">イベント</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.5rem;">2026-01-27 14:44</td>
+                        <td style="padding: 0.5rem;">15%</td>
+                        <td style="padding: 0.5rem;">50%</td>
+                        <td style="padding: 0.5rem;">スタートレック・コンピュータ構築日</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <p class="last-update">最終更新: 2026-01-27 14:44 JST</p>
+    </main>
+
+    <footer>
+        <p>© 2026 KT & AI | 奈良の文化住宅より</p>
+    </footer>
+</body>
+</html>
