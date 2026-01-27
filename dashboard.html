@@ -304,6 +304,39 @@
                 </div>
             </div>
 
+            <!-- Weather -->
+            <div class="card">
+                <h2>🌤️ 天気予報（学園前駅周辺）</h2>
+                <div class="market-item">
+                    <span class="market-label">概況</span>
+                    <span class="market-value" id="weather-condition">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">🌅 6:30 体感温度</span>
+                    <span class="market-value" id="temp-morning">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">☀️ 13:00 体感温度</span>
+                    <span class="market-value" id="temp-noon">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">💨 風の強さ</span>
+                    <span class="market-value" id="wind-speed">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">💧 湿度</span>
+                    <span class="market-value" id="humidity">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">👕 洗濯日和</span>
+                    <span class="market-value" id="laundry">--</span>
+                </div>
+                <div class="market-item">
+                    <span class="market-label">😊 快適指数</span>
+                    <span class="market-value" id="comfort">--</span>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="card">
                 <h2>🚀 クイックアクション</h2>
@@ -371,8 +404,68 @@
             }
         }
         
+        async function fetchWeather() {
+            try {
+                // 学園前駅: 34.6847, 135.7611
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=34.6847&longitude=135.7611&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&hourly=apparent_temperature,precipitation_probability,wind_speed_10m&timezone=Asia/Tokyo&forecast_days=1');
+                const data = await res.json();
+                
+                // Weather codes to Japanese
+                const weatherCodes = {
+                    0: '☀️ 快晴', 1: '🌤️ 晴れ', 2: '⛅ 曇りがち', 3: '☁️ 曇り',
+                    45: '🌫️ 霧', 48: '🌫️ 霧氷', 51: '🌧️ 小雨', 53: '🌧️ 雨',
+                    55: '🌧️ 強い雨', 61: '🌧️ 小雨', 63: '🌧️ 雨', 65: '🌧️ 大雨',
+                    71: '🌨️ 小雪', 73: '🌨️ 雪', 75: '🌨️ 大雪', 80: '🌧️ にわか雨',
+                    95: '⛈️ 雷雨'
+                };
+                
+                const code = data.current.weather_code;
+                document.getElementById('weather-condition').textContent = weatherCodes[code] || '不明';
+                
+                // Morning (6:30 = index 6) and Noon (13:00 = index 13)
+                const morningTemp = data.hourly.apparent_temperature[6];
+                const noonTemp = data.hourly.apparent_temperature[13];
+                document.getElementById('temp-morning').textContent = morningTemp + '°C';
+                document.getElementById('temp-noon').textContent = noonTemp + '°C';
+                
+                // Wind
+                const wind = data.current.wind_speed_10m;
+                let windLevel = '🍃 穏やか';
+                if (wind > 10) windLevel = '💨 やや強い';
+                if (wind > 20) windLevel = '🌬️ 強い';
+                if (wind > 30) windLevel = '🌪️ 非常に強い';
+                document.getElementById('wind-speed').textContent = wind + ' km/h ' + windLevel;
+                
+                // Humidity
+                const humidity = data.current.relative_humidity_2m;
+                document.getElementById('humidity').textContent = humidity + '%';
+                
+                // Laundry (good if sunny/cloudy, low rain prob, wind ok)
+                const rainProb = Math.max(...data.hourly.precipitation_probability.slice(8, 17));
+                let laundry = '🔴 不向き';
+                if (code <= 3 && rainProb < 30 && wind < 25) laundry = '🟢 最適！';
+                else if (code <= 3 && rainProb < 50) laundry = '🟡 まあまあ';
+                document.getElementById('laundry').textContent = laundry;
+                
+                // Comfort index
+                let comfort = '😐 普通';
+                if (noonTemp >= 15 && noonTemp <= 25 && humidity >= 40 && humidity <= 70 && wind < 15) {
+                    comfort = '😊 快適';
+                } else if (noonTemp < 5 || noonTemp > 35 || humidity > 85) {
+                    comfort = '😣 不快';
+                }
+                document.getElementById('comfort').textContent = comfort;
+                
+            } catch (err) {
+                console.error('Weather error:', err);
+            }
+        }
+        
         // Load on page load
-        window.onload = fetchPrices;
+        window.onload = function() {
+            fetchPrices();
+            fetchWeather();
+        };
     </script>
 </body>
 </html>
