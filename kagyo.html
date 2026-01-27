@@ -18,21 +18,16 @@
             --text: #E8DCC4;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Noto Serif JP', serif;
             background: var(--dark-bg);
             color: var(--text);
             min-height: 100vh;
-            line-height: 1.8;
+            line-height: 1.9;
         }
         
-        /* Decorative Border Pattern */
         .tibetan-border {
             height: 20px;
             background: linear-gradient(90deg, 
@@ -42,17 +37,13 @@
             background-size: 40px 100%;
         }
         
-        /* Header */
         header {
             background: linear-gradient(180deg, var(--maroon) 0%, var(--dark-bg) 100%);
             text-align: center;
             padding: 3rem 1rem;
         }
         
-        .dharma-wheel {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
+        .dharma-wheel { font-size: 4rem; margin-bottom: 1rem; }
         
         header h1 {
             font-size: 2.5rem;
@@ -61,78 +52,109 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
-        /* Main Content */
         main {
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
         
-        /* Practice Card */
-        .practice-card {
+        .intro {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--gold-light);
+        }
+        
+        .section {
             background: var(--dark-surface);
             border: 2px solid var(--gold);
             border-radius: 8px;
+            margin-bottom: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
         }
         
-        .practice-header {
+        .section-header {
             background: linear-gradient(90deg, var(--deep-red), var(--maroon));
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             border-bottom: 2px solid var(--gold);
-        }
-        
-        .practice-header h2 {
             color: var(--gold);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
         
-        .practice-body {
-            padding: 1.5rem;
-        }
-        
-        /* Practice List */
-        .practice-list {
-            list-style: none;
+        .section-body {
+            padding: 1.25rem;
         }
         
         .practice-item {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
             display: flex;
-            align-items: flex-start;
-            gap: 1rem;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         
-        .practice-item:last-child {
-            border-bottom: none;
-        }
+        .practice-item:last-child { border-bottom: none; }
         
-        .practice-number {
-            background: var(--gold);
-            color: var(--dark-bg);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .practice-content {
-            font-size: 1.1rem;
-        }
+        .practice-name { flex: 1; }
         
         .practice-count {
             color: var(--gold);
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
+            font-weight: bold;
+            white-space: nowrap;
         }
         
-        /* Footer */
+        .mantra-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .mantra-title {
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mantra-text {
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .mantra-meaning {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        .long-text {
+            line-height: 2.2;
+            text-align: justify;
+        }
+        
+        .note {
+            background: rgba(139, 0, 0, 0.3);
+            border-left: 3px solid var(--gold);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .ornament {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            opacity: 0.6;
+        }
+        
         footer {
             text-align: center;
             padding: 2rem;
@@ -141,8 +163,17 @@
             font-size: 0.85rem;
         }
         
-        footer a {
-            color: var(--gold);
+        footer a { color: var(--gold); }
+        
+        h3 {
+            color: var(--gold-light);
+            margin: 1.5rem 0 0.75rem 0;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; letter-spacing: 0.1em; }
+            .practice-item { flex-direction: column; gap: 0.25rem; }
         }
     </style>
 </head>
@@ -157,45 +188,299 @@
     <div class="tibetan-border"></div>
     
     <main>
-        <div class="practice-card">
-            <div class="practice-header">
-                <h2>朝の修行</h2>
-            </div>
-            <div class="practice-body">
-                <ol class="practice-list">
-                    <li class="practice-item">
-                        <span class="practice-number">1</span>
-                        <div class="practice-content">
-                            グル・ヨーガ真言<span class="practice-count">21回</span>
-                        </div>
-                    </li>
-                    <li class="practice-item">
-                        <span class="practice-number">2</span>
-                        <div class="practice-content">
-                            気功
-                        </div>
-                    </li>
-                    <li class="practice-item">
-                        <span class="practice-number">3</span>
-                        <div class="practice-content">
-                            四無量心
-                        </div>
-                    </li>
-                    <li class="practice-item">
-                        <span class="practice-number">4</span>
-                        <div class="practice-content">
-                            懺悔・随喜・廻向
-                        </div>
-                    </li>
-                </ol>
+        <p class="intro">できる範囲でやってみてください。</p>
+
+        <!-- 早朝 -->
+        <div class="section">
+            <div class="section-header">🌅 早朝</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">グルヨーガのマントラ</span>
+                    <span class="practice-count">２１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">気功</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">入菩提行論の空性の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
             </div>
         </div>
+
+        <!-- 08:00 -->
+        <div class="section">
+            <div class="section-header">🕗 ０８：００</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">空性のマントラ１</span>
+                    <span class="practice-count">３回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10:00 -->
+        <div class="section">
+            <div class="section-header">🕙 １０：００</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12:00 -->
+        <div class="section">
+            <div class="section-header">🕛 １２：００</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">空性のマントラ２</span>
+                    <span class="practice-count">３回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 夕方 -->
+        <div class="section">
+            <div class="section-header">🌇 夕方</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">入菩提行論の空性の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 夜 -->
+        <div class="section">
+            <div class="section-header">🌙 夜</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">空性のマントラ２</span>
+                    <span class="practice-count">３回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 就寝前 -->
+        <div class="section">
+            <div class="section-header">🛏️ 就寝前</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">四無量心の念正智の詞章</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">懺悔・随喜・回向</span>
+                    <span class="practice-count"></span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">空性のマントラ１</span>
+                    <span class="practice-count">３回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">ハリオーム・タット・サット（と唱える）</span>
+                    <span class="practice-count">２１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">主よ、あなただけが実在です（と唱える）</span>
+                    <span class="practice-count">２１回</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ornament">༄༅། །།</div>
+
+        <!-- その他 -->
+        <div class="section">
+            <div class="section-header">📿 その他、好きな時間に</div>
+            <div class="section-body">
+                <div class="practice-item">
+                    <span class="practice-name">懺悔の瞑想の詞章（目標１０００回）</span>
+                    <span class="practice-count">１時間</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">ヴァーヤヴィーヤ</span>
+                    <span class="practice-count">１時間</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">五体投地（目標６００時間）</span>
+                    <span class="practice-count">３０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">教学</span>
+                    <span class="practice-count">３０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">菩薩の生き方</span>
+                    <span class="practice-count">１５分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">心の訓練</span>
+                    <span class="practice-count">１０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">シッダールタ</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">入菩提行論の歌どれか</span>
+                    <span class="practice-count">１回</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">バストリカープラーナーヤーマ</span>
+                    <span class="practice-count">１０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">ブラーマリープラーナーヤーマ</span>
+                    <span class="practice-count">１０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">カーラチャクラのマントラ</span>
+                    <span class="practice-count">１０分</span>
+                </div>
+                <div class="practice-item">
+                    <span class="practice-name">心を訓練するための八つの詩</span>
+                    <span class="practice-count">１回</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <p>※時間指定のある修行は、その時間に行なうのが難しい場合は好きな時間に行なってもかまいません。</p>
+            <p>※わからない行法等は、インストラクターにお聞きください。</p>
+        </div>
+
+        <div class="ornament">༔</div>
+
+        <!-- マントラ・詞章 -->
+        <div class="section">
+            <div class="section-header">📜 マントラ・詞章</div>
+            <div class="section-body">
+
+                <div class="mantra-box">
+                    <div class="mantra-title">グルヨーガのマントラ</div>
+                    <div class="mantra-text">オーム アー フーム ヴァジュラ グル パドマ シッディ フーム</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">懺悔の瞑想の詞章</div>
+                    <div class="long-text">「ああ今まで、真理に巡り会うことのできなかった私は　魔のささやきにそそのかされ、十悪をおかし、　菩薩としての約束を破り、グルとの契約を破ってきた。　その結果、今生では、いまだ覚醒に至ることができず、カルマによって苦しめられている。　今より、私のなした悪業のすべてを告白し、悔い改め、　二度と同じ過ちを犯しませぬゆえ、　どうぞカルマを消滅してください。」</div>
+                </div>
+
+                <div class="note">
+                    <p>※ヴァーヤヴィーヤ（・クンバカ・ムドラー）、五体投地のやり方は「シャンバラヨーガ」を参照してください。（文字だけだとよくわからないかもしれないので、インストラクターに教えてもらってください。）</p>
+                    <p>気功（文易筋経（ダルマ気功））のやり方は「シャンバラヨーガ」および日々の修行ＤＶＤのＶｏｌ２を参照してください。</p>
+                    <p>五体投地は、「帰依の集会樹の詞章」を３回唱えてから、一回投地するようにします。</p>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">◎帰依の集会樹の詞章</div>
+                    <div class="long-text">グルと三宝と自性菩提心と<br>心の本性のマンダラに<br>覚醒の精髄を得るその日まで<br>深く帰依し奉ります</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">四無量心の念正智の詞章</div>
+                    <div class="long-text">「わたしが今なしている行為は、四無量心に基づいているだろうか？<br>わたしが今なしている行為は、衆生を利しているだろうか？<br>わたしのすべての行為が、すべての魂を利しますように。」</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">空性のマントラ１</div>
+                    <div class="mantra-text">オーム スワバーヴァシュッダーハ サルヴァダルマーハ スワバーヴァシュッドー ハム</div>
+                    <div class="mantra-meaning">（意味：わたしの本性は清浄であり、すべての現象の本性も清浄である。）</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">空性のマントラ２</div>
+                    <div class="mantra-text">オーム シューンヤター ジュニャーナ ヴァジュラスワバーヴァ アートマコ ハム</div>
+                    <div class="mantra-meaning">（意味：わたしは空性と叡智のヴァジュラの本性にほかならない。）</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">☆入菩提行論の空性の詞章</div>
+                    <div class="long-text">この全世界は、生起することもなく、消滅することもない。<br>もろもろの輪廻世界は夢のようなもので、芭蕉のように核心がない。ニルヴァーナに入った者と入っていない者も、真実においては相違はない。<br>かように諸法が空であれば、何が得られ、何が奪われることになろうか。<br>誰が誰に対して尊敬したり、あるいは軽蔑せられるであろうか。<br>楽や苦しみがどこにあろうか。何が好きで、何が嫌いか。何が渇愛であるか。その本質を探求するとき、どこに渇愛があるか。<br>この生命世界を考察するなら、誰が実にそこで死ぬであろうか。輪廻の中で、誰が敵になり、誰が親族であり、誰が友人であろうか。一切を虚空に等しと理解せよ。</div>
+                </div>
+
+                <h3>カーラチャクラのマントラ</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">※サンスクリット語のものとチベット語のものがあります。</p>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">【チベット語】</div>
+                    <div class="mantra-text">オーム アー フーム ホー ハム キャ マラワラヤ フーム ペ</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">【サンスクリット語】</div>
+                    <div class="mantra-text">オーム アー フーム ホー ハム クシャ マラワラヤ フーム パット</div>
+                </div>
+
+                <div class="mantra-box">
+                    <div class="mantra-title">心を訓練するための八つの詩</div>
+                    <div class="long-text" style="font-size: 0.95rem;">
+                        <p>如意宝珠にもまさるすべての衆生の最高の幸福を実現しようとの決意をもって､いつも彼女たち（母なる衆生）を慈しむことを学べますように｡</p>
+                        <p style="margin-top: 0.75rem;">いつであれ､他者と交流するときは､自分自身を最も劣った者と見なし､自らの心の奥底から､他者を優れた者として慈しむことを学べますように｡</p>
+                        <p style="margin-top: 0.75rem;">あらゆる行為をするときに､心の中でよく吟味することを学べますように｡自分と他者を危機に陥れる思いが起こったならば､すみやかに断固としてそれに立ち向かい､退散させることができますように。</p>
+                        <p style="margin-top: 0.75rem;">性根の悪い人たち､悪行や苦しみによって強くさいなまれている人たちを大事にすることを学べますように｡あたかも貴重な宝を見いだしたかのように｡</p>
+                        <p style="margin-top: 0.75rem;">他者が妬みから悪口､中傷などをもって私を不当に扱うときも､損失はすべて私が引き受け､勝利は他者に与えることを学べますように｡</p>
+                        <p style="margin-top: 0.75rem;">自分が大きな期待をもって尽くした人が理由もなく私をひどく傷つけるときも､すばらしい心の導き手として､その人を見なすことを学べますように｡</p>
+                        <p style="margin-top: 0.75rem;">要するに､直接的にも､間接的にもあらゆる手助けと幸福を、我が母なるすべての人々に例外なく与えることと､我が母なる人々のあらゆる危害と苦しみを謹んで私が引き受けることを学べますように｡</p>
+                        <p style="margin-top: 0.75rem;">これらすべての心の訓練が､八つの世間的な関心物の垢によっては汚されないことを学べますように｡また、あらゆる現象は幻のようであると理解することによって､執着の束縛から解放されますように。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </main>
     
     <div class="tibetan-border"></div>
     
     <footer>
-        <p><a href="index.html">← KT's 書庫</a></p>
+        <p>From: Murari Ragava 先生</p>
+        <p style="margin-top: 0.5rem;">2025年11月8日</p>
+        <p style="margin-top: 1rem;"><a href="index.html">← KT's 書庫</a></p>
     </footer>
 </body>
 </html>
