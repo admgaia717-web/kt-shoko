@@ -1,0 +1,9 @@
+1280x670 pixel horizontal banner image.
+
+A minimalist kitchen scene with code aesthetics. Soft morning light illuminates a clean countertop where cooking utensils (wooden spoon, whisk) rest alongside scattered handwritten recipe notes. In the background, a subtle overlay of green terminal text (GNU/Linux style monospace font) floats transparently. A single open cookbook lies flat, its pages transforming into flowing binary code at the edges.
+
+Color palette: muted silver-grey tones, warm beige, soft greige. No harsh colors. Photographic quality with slight film grain.
+
+Style: Editorial photography meets tech minimalism. Evokes freedom, sharing, open knowledge. No people, no faces. Warm but intellectual atmosphere.
+
+Keywords: kitchen, code, recipe, freedom, open source, minimalist, editorial
