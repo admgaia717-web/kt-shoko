@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周平くん向け Clawdbotセットアップガイド</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.8;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #FF6B35;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .hero-box {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-box p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+        
+        .env-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #FF6B35;
+        }
+        
+        .env-box h3 {
+            color: #FF6B35;
+            margin-bottom: 1rem;
+        }
+        
+        .env-box ul {
+            list-style: none;
+        }
+        
+        .env-box li:before {
+            content: "✓ ";
+            color: #FF6B35;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .roadmap {
+            margin-bottom: 3rem;
+        }
+        
+        .day-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .day-card:hover {
+            border-color: #FF6B35;
+            box-shadow: 0 8px 20px rgba(255,107,53,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .day-card.completed {
+            background: #f0f8f0;
+            border-color: #4caf50;
+        }
+        
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .day-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF6B35;
+        }
+        
+        .day-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .difficulty {
+            display: inline-block;
+        }
+        
+        .difficulty .star {
+            color: #FFD700;
+        }
+        
+        .difficulty .star.inactive {
+            color: #ddd;
+        }
+        
+        .day-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .day-content {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .step-list {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .step-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .checkbox-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #FF6B35;
+        }
+        
+        .checkbox-label input {
+            margin-right: 0.5rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B35 0%, #F7931E 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .what-is-clawdbot {
+            background: #f0f4ff;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+        
+        .what-is-clawdbot h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .what-is-clawdbot ul {
+            list-style: none;
+        }
+        
+        .what-is-clawdbot li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .what-is-clawdbot li:before {
+            content: "🤖";
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦞 Clawdbot セットアップガイド</h1>
+        <p class="subtitle">周平くん向け 7日間チャレンジ</p>
+        
+        <div class="hero-box">
+            <h2>スマホからいつでもAIアシスタント！</h2>
+            <p>7日間でClawdbotをマスターしよう。<br>
+            移動支援の記録・リマインダー・24時間いつでも質問できるパーソナルAIアシスタントが手に入ります。</p>
+        </div>
+        
+        <div class="env-box">
+            <h3>周平くんの環境に最適化</h3>
+            <ul>
+                <li>Windows PC</li>
+                <li>Google Pixel 8</li>
+                <li>Claude Code Pro トライアル（1週間無料）</li>
+            </ul>
+        </div>
+        
+        <div class="what-is-clawdbot">
+            <h2>Clawdbotとは？（30秒で分かる）</h2>
+            <ul>
+                <li>WhatsApp/LINE感覚でAIと会話</li>
+                <li>PCが寝てる間も24時間応答</li>
+                <li>移動支援の記録・リマインダーに活用可能</li>
+                <li>イラスト：スマホ↔PC↔AIの図解</li>
+            </ul>
+        </div>
+        
+        <h2 style="text-align: center; margin-bottom: 2rem; color: #FF6B35;">7日間ロードマップ</h2>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%;">
+                <span id="progressText">0%</span>
+            </div>
+        </div>
+        
+        <div class="roadmap">
+            <div class="day-card" data-day="1">
+                <div class="day-header">
+                    <div class="day-number">Day 1</div>
+                    <div class="day-meta">
+                        <span>⏱️ 30分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">WSL2のインストール</div>
+                <div class="day-content">
+                    <p>WindowsでLinuxを動かせるようにします。ターミナル1つでOK！</p>
+                    <ol class="step-list">
+                        <li>PowerShellを管理者として開く</li>
+                        <li><code>wsl --install</code> を実行</li>
+                        <li>再起動</li>
+                        <li>Ubuntuのユーザー名/パスワード設定</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="1">
+                        Day 1 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="2">
+                <div class="day-header">
+                    <div class="day-number">Day 2</div>
+                    <div class="day-meta">
+                        <span>⏱️ 20分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">Docker Desktop導入</div>
+                <div class="day-content">
+                    <p>Clawdbotを動かすための土台を作ります。</p>
+                    <ol class="step-list">
+                        <li>Docker Desktop for Windowsをダウンロード</li>
+                        <li>インストーラーを実行</li>
+                        <li>WSL 2ベースを選択</li>
+                        <li>起動確認</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="2">
+                        Day 2 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="3">
+                <div class="day-header">
+                    <div class="day-number">Day 3</div>
+                    <div class="day-meta">
+                        <span>⏱️ 45分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">Clawdbotインストール&Claude連携</div>
+                <div class="day-content">
+                    <p>いよいよ本番！Clawdbotを起動します。</p>
+                    <ol class="step-list">
+                        <li>Node.jsインストール（nvm経由）</li>
+                        <li><code>npm install -g clawdbot</code></li>
+                        <li>Claude APIキー設定</li>
+                        <li><code>clawdbot gateway start</code></li>
+                        <li>動作確認</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="3">
+                        Day 3 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="4">
+                <div class="day-header">
+                    <div class="day-number">Day 4</div>
+                    <div class="day-meta">
+                        <span>⏱️ 30分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">Telegram連携</div>
+                <div class="day-content">
+                    <p>スマホから操作できるようにします。</p>
+                    <ol class="step-list">
+                        <li>BotFatherでTelegramボット作成</li>
+                        <li>トークンをClawdbotに設定</li>
+                        <li>Pixel 8からメッセージ送信テスト</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="4">
+                        Day 4 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="5">
+                <div class="day-header">
+                    <div class="day-number">Day 5</div>
+                    <div class="day-meta">
+                        <span>⏱️ 20分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">移動支援用カスタマイズ</div>
+                <div class="day-content">
+                    <p>リマインダーや記録機能を設定します。</p>
+                    <ol class="step-list">
+                        <li>HEARTBEAT.md編集</li>
+                        <li>定期リマインダー設定</li>
+                        <li>記録用テンプレート作成</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="5">
+                        Day 5 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="6">
+                <div class="day-header">
+                    <div class="day-number">Day 6</div>
+                    <div class="day-meta">
+                        <span>⏱️ 30分</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star inactive">☆</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">便利スキル導入</div>
+                <div class="day-content">
+                    <p>天気予報、メモ、カレンダーなどのスキルを追加。</p>
+                    <ol class="step-list">
+                        <li>weatherスキル導入</li>
+                        <li>apple-notesスキル（Windowsの場合は代替）</li>
+                        <li>スキル動作確認</li>
+                    </ol>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="6">
+                        Day 6 完了！
+                    </label>
+                </div>
+            </div>
+            
+            <div class="day-card" data-day="7">
+                <div class="day-header">
+                    <div class="day-number">Day 7</div>
+                    <div class="day-meta">
+                        <span>⏱️ 自由</span>
+                        <span class="difficulty">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="day-title">実戦投入！</div>
+                <div class="day-content">
+                    <p>実際に使ってみて、自分流にカスタマイズ。</p>
+                    <ul class="step-list">
+                        <li>移動支援の記録を取ってみる</li>
+                        <li>リマインダーを活用</li>
+                        <li>困ったことをClawdbotに相談</li>
+                        <li>KTさんに成果報告！</li>
+                    </ul>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="day-checkbox" data-day="7">
+                        Day 7 完了！おめでとう！🎉
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+            <h3 style="color: #FF6B35; margin-bottom: 1rem;">困ったときは？</h3>
+            <p>KTさんに連絡するか、<a href="https://docs.clawd.bot" target="_blank" style="color: #667eea;">公式ドキュメント</a>を参照してください。</p>
+        </div>
+    </div>
+    
+    <script>
+        // LocalStorageで進捗を保存
+        const checkboxes = document.querySelectorAll('.day-checkbox');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        
+        // 初期化：保存された進捗を読み込み
+        checkboxes.forEach(checkbox => {
+            const day = checkbox.dataset.day;
+            const saved = localStorage.getItem(`day${day}`);
+            if (saved === 'true') {
+                checkbox.checked = true;
+                checkbox.closest('.day-card').classList.add('completed');
+            }
+        });
+        
+        // 進捗バーを更新
+        function updateProgress() {
+            const total = checkboxes.length;
+            const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = percentage + '%';
+        }
+        
+        // チェックボックスイベント
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const day = e.target.dataset.day;
+                const card = e.target.closest('.day-card');
+                
+                if (e.target.checked) {
+                    card.classList.add('completed');
+                    localStorage.setItem(`day${day}`, 'true');
+                } else {
+                    card.classList.remove('completed');
+                    localStorage.removeItem(`day${day}`);
+                }
+                
+                updateProgress();
+            });
+        });
+        
+        // 初回表示時に進捗バーを更新
+        updateProgress();
+    </script>
+</body>
+</html>
