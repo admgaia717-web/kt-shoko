@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 ComfyUI 使い方ガイド</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ComfyUI Guide specific styles */
+        .guide-header {
+            background: linear-gradient(135deg, #6B4423 0%, #F37021 100%);
+        }
+        
+        .quick-access {
+            background: linear-gradient(135deg, #F37021 0%, #C9A961 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .quick-access h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .quick-access .access-url {
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: inline-block;
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-access .access-url a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .quick-access .access-url a:hover {
+            text-decoration: underline;
+        }
+        
+        .code-block {
+            background: #2C1810;
+            color: #FAF6F0;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .code-block code {
+            color: #C9A961;
+        }
+        
+        .step-list {
+            counter-reset: step;
+        }
+        
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--hermes-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .node-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--hermes-orange);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .node-card h4 {
+            color: var(--hermes-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .node-card .node-type {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .warning-box {
+            background: #FFF3CD;
+            border-left: 4px solid #F37021;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box::before {
+            content: "⚠️ ";
+        }
+        
+        .tip-box {
+            background: #D4EDDA;
+            border-left: 4px solid #6B8E23;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tip-box::before {
+            content: "💡 ";
+        }
+        
+        .model-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .model-icon {
+            font-size: 2rem;
+        }
+        
+        .model-details h4 {
+            color: var(--hermes-brown);
+            margin-bottom: 0.3rem;
+        }
+        
+        .model-details .model-path {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .troubleshoot-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .troubleshoot-item:last-child {
+            border-bottom: none;
+        }
+        
+        .troubleshoot-item h4 {
+            color: #C9A961;
+            margin-bottom: 0.5rem;
+        }
+        
+        .troubleshoot-item .symptom {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .workflow-diagram {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .workflow-nodes {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .workflow-node {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 2px solid var(--hermes-orange);
+            font-size: 0.9rem;
+        }
+        
+        .workflow-arrow {
+            color: var(--hermes-orange);
+            font-size: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: var(--bg-secondary);
+            color: var(--hermes-brown);
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: var(--hermes-brown);
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            columns: 2;
+        }
+        
+        .toc a {
+            display: block;
+            padding: 0.3rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .toc ul {
+                columns: 1;
+            }
+            
+            .workflow-nodes {
+                flex-direction: column;
+            }
+            
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="guide-header">
+        <h1>🎨 ComfyUI 使い方ガイド</h1>
+        <p class="tagline">Mac mini で動く Stable Diffusion ノードベース UI</p>
+    </header>
+
+    <main>
+        <!-- Quick Access -->
+        <div class="quick-access">
+            <h3>🚀 今すぐアクセス</h3>
+            <div class="access-url">
+                <a href="http://192.168.188.193:8188" target="_blank">http://192.168.188.193:8188</a>
+            </div>
+            <p>Mac mini 上で24時間稼働中</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>📑 目次</h3>
+            <ul>
+                <li><a href="#what-is-comfyui">1. ComfyUIとは</a></li>
+                <li><a href="#access">2. アクセス方法</a></li>
+                <li><a href="#basic-usage">3. 基本的な使い方</a></li>
+                <li><a href="#models">4. インストール済みモデル</a></li>
+                <li><a href="#add-models">5. モデルの追加方法</a></li>
+                <li><a href="#nodes">6. よく使うノード</a></li>
+                <li><a href="#troubleshooting">7. トラブルシューティング</a></li>
+            </ul>
+        </div>
+
+        <!-- Section 1: What is ComfyUI -->
+        <section id="what-is-comfyui">
+            <h2>1. ComfyUIとは</h2>
+            <p>ComfyUIは、<strong>Stable Diffusion</strong>のための強力なノードベースのユーザーインターフェースです。</p>
+            
+            <div class="card">
+                <h3>✨ 特徴</h3>
+                <ul>
+                    <li><strong>ノードベース</strong>: 処理の流れを視覚的に構築できる</li>
+                    <li><strong>柔軟性</strong>: 複雑なワークフローも自由に作成可能</li>
+                    <li><strong>効率的</strong>: 必要な処理だけを再実行、メモリ効率も良い</li>
+                    <li><strong>拡張性</strong>: カスタムノードで機能を追加できる</li>
+                </ul>
+            </div>
+
+            <div class="workflow-diagram">
+                <p><strong>基本的な画像生成フロー</strong></p>
+                <div class="workflow-nodes">
+                    <span class="workflow-node">📝 プロンプト</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">🧠 モデル</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">🎲 サンプラー</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">🖼️ デコーダー</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">💾 保存</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Access -->
+        <section id="access">
+            <h2>2. アクセス方法</h2>
+            
+            <div class="step-list">
+                <ul>
+                    <li>同じネットワーク（LAN）に接続していることを確認</li>
+                    <li>ブラウザで <code>http://192.168.188.193:8188</code> を開く</li>
+                    <li>ComfyUIの画面が表示されれば成功！</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>ヒント:</strong> ブックマークに登録しておくと便利です。Safari/Chrome どちらでも動作します。
+            </div>
+
+            <div class="warning-box">
+                <strong>注意:</strong> 外部ネットワークからはアクセスできません。家のWi-Fiに接続している必要があります。
+            </div>
+        </section>
+
+        <!-- Section 3: Basic Usage -->
+        <section id="basic-usage">
+            <h2>3. 基本的な使い方</h2>
+
+            <h3>📂 ワークフローの読み込み</h3>
+            <p>ComfyUIでは、画像生成の設定を「ワークフロー」として保存・読み込みできます。</p>
+            
+            <div class="step-list">
+                <ul>
+                    <li><strong>Load</strong> ボタンをクリック</li>
+                    <li>JSONファイルを選択（またはドラッグ＆ドロップ）</li>
+                    <li>ワークフローがキャンバスに展開される</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>ヒント:</strong> ComfyUIで生成した画像には、メタデータとしてワークフローが埋め込まれています。PNG画像をキャンバスにドロップすると、その画像を生成した設定を復元できます！
+            </div>
+
+            <h3>✏️ プロンプト入力</h3>
+            <p>生成したい画像を言葉で指示します。</p>
+
+            <div class="node-card">
+                <h4>CLIP Text Encode (Positive)</h4>
+                <p class="node-type">ポジティブプロンプト - 描きたいものを記述</p>
+                <p>例: <code>a beautiful sunset over the ocean, golden hour, photorealistic</code></p>
+            </div>
+
+            <div class="node-card">
+                <h4>CLIP Text Encode (Negative)</h4>
+                <p class="node-type">ネガティブプロンプト - 避けたいものを記述</p>
+                <p>例: <code>blurry, low quality, distorted, ugly</code></p>
+            </div>
+
+            <h3>▶️ Queue Prompt で生成</h3>
+            <div class="step-list">
+                <ul>
+                    <li>プロンプトとパラメータを設定</li>
+                    <li>右側パネルの <strong>Queue Prompt</strong> ボタンをクリック</li>
+                    <li>進捗バーが表示され、生成が始まる</li>
+                    <li>完了すると Preview Image ノードに結果が表示される</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <code>Ctrl + Enter</code> でも Queue Prompt を実行できます
+            </div>
+
+            <h3>💾 生成画像の保存</h3>
+            <p>画像の保存方法は2つあります：</p>
+
+            <table>
+                <tr>
+                    <th>方法</th>
+                    <th>説明</th>
+                    <th>保存先</th>
+                </tr>
+                <tr>
+                    <td><strong>Save Image ノード</strong></td>
+                    <td>ワークフローに組み込んで自動保存</td>
+                    <td>ComfyUI/output/</td>
+                </tr>
+                <tr>
+                    <td><strong>右クリック保存</strong></td>
+                    <td>プレビュー画像を右クリック→保存</td>
+                    <td>任意の場所</td>
+                </tr>
+            </table>
+
+            <div class="tip-box">
+                <strong>おすすめ:</strong> Save Image ノードを使うと、ワークフロー情報も画像に埋め込まれるので、後から設定を再現できます。
+            </div>
+        </section>
+
+        <!-- Section 4: Installed Models -->
+        <section id="models">
+            <h2>4. インストール済みモデル</h2>
+            
+            <div class="model-info">
+                <span class="model-icon">🧠</span>
+                <div class="model-details">
+                    <h4>v1-5-pruned-emaonly.safetensors</h4>
+                    <p><strong>Stable Diffusion 1.5</strong> - 汎用的な画像生成モデル</p>
+                    <p class="model-path">models/checkpoints/v1-5-pruned-emaonly.safetensors</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>SD 1.5 の特徴</h3>
+                <ul>
+                    <li>✅ 軽量で高速（Mac mini M2 でも快適に動作）</li>
+                    <li>✅ 多くのLoRAやカスタムモデルと互換性あり</li>
+                    <li>✅ 512×512 の解像度で最適化</li>
+                    <li>⚠️ 最新モデル（SDXL等）より品質は控えめ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 5: Adding Models -->
+        <section id="add-models">
+            <h2>5. 追加モデルのインストール方法</h2>
+
+            <h3>🔍 モデルの入手先</h3>
+            <ul>
+                <li><a href="https://civitai.com/" target="_blank">Civitai</a> - 最大のモデル共有サイト</li>
+                <li><a href="https://huggingface.co/" target="_blank">Hugging Face</a> - 公式・研究用モデル</li>
+            </ul>
+
+            <h3>📥 インストール手順</h3>
+            
+            <div class="step-list">
+                <ul>
+                    <li>モデルファイル（.safetensors または .ckpt）をダウンロード</li>
+                    <li>Mac mini にSSH接続またはファイル共有でアクセス</li>
+                    <li>適切なフォルダにコピー（下表参照）</li>
+                    <li>ComfyUIを再起動、または「Refresh」ボタンをクリック</li>
+                </ul>
+            </div>
+
+            <table>
+                <tr>
+                    <th>モデルの種類</th>
+                    <th>配置フォルダ</th>
+                </tr>
+                <tr>
+                    <td>Checkpoint（メインモデル）</td>
+                    <td><code>models/checkpoints/</code></td>
+                </tr>
+                <tr>
+                    <td>LoRA</td>
+                    <td><code>models/loras/</code></td>
+                </tr>
+                <tr>
+                    <td>VAE</td>
+                    <td><code>models/vae/</code></td>
+                </tr>
+                <tr>
+                    <td>ControlNet</td>
+                    <td><code>models/controlnet/</code></td>
+                </tr>
+                <tr>
+                    <td>Upscaler</td>
+                    <td><code>models/upscale_models/</code></td>
+                </tr>
+            </table>
+
+            <div class="code-block">
+# SSH経由でモデルをコピーする例
+<code>scp model.safetensors user@192.168.188.193:~/ComfyUI/models/checkpoints/</code>
+            </div>
+
+            <div class="warning-box">
+                <strong>注意:</strong> SD 1.5 用のモデル・LoRAと SDXL 用は互換性がありません。ダウンロード時に対応バージョンを確認してください。
+            </div>
+        </section>
+
+        <!-- Section 6: Common Nodes -->
+        <section id="nodes">
+            <h2>6. よく使うノードの説明</h2>
+
+            <div class="node-card">
+                <h4>📦 Load Checkpoint</h4>
+                <p class="node-type">モデルローダー</p>
+                <p>Stable Diffusionのメインモデルを読み込みます。MODEL、CLIP、VAEの3つを出力。</p>
+            </div>
+
+            <div class="node-card">
+                <h4>📝 CLIP Text Encode</h4>
+                <p class="node-type">テキストエンコーダー</p>
+                <p>プロンプト（テキスト）を機械が理解できる形式（Conditioning）に変換します。</p>
+            </div>
+
+            <div class="node-card">
+                <h4>🎨 Empty Latent Image</h4>
+                <p class="node-type">潜在空間の初期化</p>
+                <p>生成する画像のサイズを指定します。SD 1.5なら512×512が最適。</p>
+            </div>
+
+            <div class="node-card">
+                <h4>🎲 KSampler</h4>
+                <p class="node-type">サンプラー（生成の心臓部）</p>
+                <p>ノイズ除去を繰り返して画像を生成する核心部分。主な設定：</p>
+                <ul>
+                    <li><strong>steps</strong>: ステップ数（20-30が一般的）</li>
+                    <li><strong>cfg</strong>: プロンプトへの忠実度（7-8が標準）</li>
+                    <li><strong>sampler_name</strong>: アルゴリズム（euler, dpmpp_2m等）</li>
+                    <li><strong>seed</strong>: 乱数シード（同じ値で同じ結果）</li>
+                </ul>
+            </div>
+
+            <div class="node-card">
+                <h4>🖼️ VAE Decode</h4>
+                <p class="node-type">デコーダー</p>
+                <p>潜在空間の画像データを、実際のピクセル画像に変換します。</p>
+            </div>
+
+            <div class="node-card">
+                <h4>👁️ Preview Image / Save Image</h4>
+                <p class="node-type">出力ノード</p>
+                <p>生成された画像を表示・保存します。Preview は一時表示、Save は永続保存。</p>
+            </div>
+
+            <div class="tip-box">
+                <strong>ノードの追加方法:</strong> キャンバス上で右クリック → Add Node、またはダブルクリックで検索ボックスを開いて名前で検索。
+            </div>
+        </section>
+
+        <!-- Section 7: Troubleshooting -->
+        <section id="troubleshooting">
+            <h2>7. トラブルシューティング</h2>
+
+            <div class="troubleshoot-item">
+                <h4>❌ ページにアクセスできない</h4>
+                <p class="symptom">「このサイトにアクセスできません」と表示される</p>
+                <ul>
+                    <li>同じWi-Fiネットワークに接続しているか確認</li>
+                    <li>Mac mini が起動しているか確認</li>
+                    <li>ComfyUI が実行中か確認（SSH して <code>ps aux | grep python</code>）</li>
+                </ul>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ 「CUDA out of memory」エラー</h4>
+                <p class="symptom">生成中にエラーで止まる</p>
+                <ul>
+                    <li>画像サイズを小さくする（512×512以下）</li>
+                    <li>バッチサイズを1にする</li>
+                    <li>他の重いアプリを終了する</li>
+                </ul>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ 生成が極端に遅い</h4>
+                <p class="symptom">1枚に数十分かかる</p>
+                <ul>
+                    <li>Mac mini M2 では20-30秒/枚が目安</li>
+                    <li>ステップ数を減らす（20程度で十分）</li>
+                    <li>解像度を下げる</li>
+                </ul>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ モデルが表示されない</h4>
+                <p class="symptom">ドロップダウンにモデルが出てこない</p>
+                <ul>
+                    <li>ファイルが正しいフォルダに配置されているか確認</li>
+                    <li>右側パネルの「Refresh」ボタンをクリック</li>
+                    <li>ファイル拡張子が .safetensors または .ckpt か確認</li>
+                </ul>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ 真っ黒/真っ白の画像が出力される</h4>
+                <p class="symptom">生成は完了するが画像がおかしい</p>
+                <ul>
+                    <li>VAE が正しく接続されているか確認</li>
+                    <li>CFG値が極端でないか確認（7-8推奨）</li>
+                    <li>ネガティブプロンプトが空でないか確認</li>
+                </ul>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ ノードが赤くエラー表示</h4>
+                <p class="symptom">ノードが赤枠で囲まれている</p>
+                <ul>
+                    <li>入力が正しく接続されているか確認</li>
+                    <li>必要なモデルが読み込まれているか確認</li>
+                    <li>カスタムノードの場合は依存関係をインストール</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Additional Resources -->
+        <section>
+            <h2>📚 参考リンク</h2>
+            <ul>
+                <li><a href="https://github.com/comfyanonymous/ComfyUI" target="_blank">ComfyUI 公式GitHub</a></li>
+                <li><a href="https://comfyanonymous.github.io/ComfyUI_examples/" target="_blank">公式ワークフロー例</a></li>
+                <li><a href="https://civitai.com/" target="_blank">Civitai（モデル配布サイト）</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 書庫 | 最終更新: <span id="last-updated"></span></p>
+    </footer>
+
+    <!-- Hamburger Menu -->
+    <button class="hamburger-btn" aria-label="メニュー">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="menu-overlay"></div>
+    <nav class="hamburger-menu">
+        <h3>メインメニュー</h3>
+        <a href="index.html">🏠 ホーム</a>
+        <a href="dashboard.html">📊 ダッシュボード</a>
+        <a href="wishlist.html">📝 やりたいことリスト</a>
+        <a href="articles.html">📄 記事</a>
+        <a href="conversations.html">💬 会話履歴</a>
+        <a href="usage.html">📈 使用量</a>
+        <a href="projects.html">🚀 プロジェクト</a>
+        <a href="daily-research.html">🔍 リサーチ</a>
+        <h3>ガイド</h3>
+        <a href="comfyui-guide.html" class="active">🎨 ComfyUI ガイド</a>
+        <a href="clawdbot-setup-shuhei.html">🦞 Clawdbot Setup</a>
+        <h3>その他</h3>
+        <a href="automation-project.html">⚙️ オートメーション</a>
+        <a href="cooking-cypherpunk.html">🍳 Cooking Cypherpunk</a>
+        <a href="kagyo.html">👴 階戸さん</a>
+        <a href="note-analytics.html">📱 Note Analytics</a>
+    </nav>
+    <script src="js/menu.js"></script>
+    <script>
+        // Set last updated date
+        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('ja-JP');
+    </script>
+</body>
+</html>
