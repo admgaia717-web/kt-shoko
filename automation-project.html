@@ -167,22 +167,27 @@
         <p class="subtitle">目標: Clawdbot が Ownerの助けなしにパソコンを完全に操作できるようにする</p>
         
         <div class="progress-bar">
-            <div class="progress-fill" style="width: 35%;"></div>
+            <div class="progress-fill" style="width: 50%;"></div>
         </div>
-        <p style="text-align: center; color: var(--text-muted);">全体進捗: 35%</p>
+        <p style="text-align: center; color: var(--text-muted);">全体進捗: 50%</p>
         
         <!-- 今日のTips -->
         <div class="tips-section">
-            <h2>💡 今日の自動化Tips (2026-01-28)</h2>
+            <h2>💡 今日の自動化Tips (2026-01-30)</h2>
             <div class="tip-item">
-                <strong>Keyboard Maestro 連携</strong>
-                <p>osascript の直接キー操作が権限でブロックされても、KM マクロ経由で迂回可能。KM は既にアクセシビリティ権限を持っているため、AppleScript から KM Engine に命令を送ればUI操作ができる。</p>
-                <p class="tip-date">検証済み: 2026-01-28</p>
+                <strong>Clawdbot内蔵TTS発見！</strong>
+                <p>Clawdbotに最初からTTSツールが組み込まれていた。ElevenLabs設定なしで音声メッセージを生成・送信可能。Telegram音声メッセージも送れる。</p>
+                <p class="tip-date">検証済み: 2026-01-30</p>
             </div>
             <div class="tip-item">
-                <strong>tccutil でバイナリ追加</strong>
-                <p>Homebrew の tccutil (Python版) を使えば、sudo でコマンドラインバイナリをアクセシビリティに追加可能。ただし Full Disk Access が Terminal に必要。</p>
-                <p class="tip-date">参照: jacobsalmela/tccutil</p>
+                <strong>Mac mini Ollama稼働</strong>
+                <p>Mac miniでOllamaが正常稼働。qwen2.5:7b (4.7GB) と dolphin-mistral:7b (4.1GB) がインストール済み。ローカルLLM分析が可能に。</p>
+                <p class="tip-date">完了: 2026-01-30</p>
+            </div>
+            <div class="tip-item">
+                <strong>メルカリはJavaScript必須</strong>
+                <p>メルカリはSPAのため、単純なHTTPリクエストでは商品データを取得できない。ブラウザ自動化（Playwright等）またはAPI認証が必要。</p>
+                <p class="tip-date">調査: 2026-01-30</p>
             </div>
         </div>
         
@@ -197,6 +202,10 @@
                     <li><span class="check">✓</span> Keyboard Maestro マクロ作成 (CB Escape, CB Return, CB Tab)</li>
                     <li><span class="check">✓</span> tccutil インストール (Homebrew)</li>
                     <li><span class="check">✓</span> コンテキスト保存システム構築</li>
+                    <li><span class="check">✓</span> Mac mini セットアップ（Homebrew, Node.js, Gemini CLI）</li>
+                    <li><span class="check">✓</span> Mac mini Ollama稼働（qwen2.5:7b, dolphin-mistral:7b）</li>
+                    <li><span class="check">✓</span> 音声入力/出力（TTS内蔵発見）</li>
+                    <li><span class="check">✓</span> 価格監視システム（launchd登録済み）</li>
                 </ul>
             </div>
             
@@ -217,7 +226,8 @@
                     <li><span class="blocked">○</span> Input Monitoring 権限</li>
                     <li><span class="blocked">○</span> 自動ダイアログ処理</li>
                     <li><span class="blocked">○</span> ファイルシステム自動操作</li>
-                    <li><span class="blocked">○</span> 音声入力/出力 (ElevenLabs)</li>
+                    <li><span class="blocked">○</span> ElevenLabsへのアップグレード（オプション）</li>
+                    <li><span class="blocked">○</span> ミニ係長Gemini認証（手動必要）</li>
                 </ul>
             </div>
             
