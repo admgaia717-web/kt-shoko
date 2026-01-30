@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monero Shop 組織書 | Organization</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #ff6600;
+            --green: #3fb950;
+            --blue: #58a6ff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent); }
+        h2 { font-size: 1.4rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+        
+        .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .org-chart {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-muted); }
+        
+        .role-human { color: var(--green); }
+        .role-ai { color: var(--blue); }
+        
+        ul { margin-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+        
+        .emoji { font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👥 Monero Shop 組織書</h1>
+        <p class="subtitle">役割分担と責任範囲 | Roles & Responsibilities</p>
+        
+        <h2>🏢 組織構成</h2>
+        <div class="org-chart">
+<pre>
+                    ┌─────────────────┐
+                    │   👑 KT         │
+                    │   オーナー       │
+                    │   最終決定権     │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+              ▼              ▼              ▼
+    ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+    │ 🤖 Antigravity│  │ 💻 エア係長  │  │ 🖥️ ミニ係長  │
+    │    部長      │  │ (MacBook)   │  │ (Mac mini)  │
+    │  統括・設計   │  │  自動化     │  │  LLM分析    │
+    └─────────────┘  └─────────────┘  └─────────────┘
+</pre>
+        </div>
+        
+        <h2>👤 役割詳細</h2>
+        
+        <h3><span class="emoji">👑</span> KT（オーナー）<span class="role-human">【人間】</span></h3>
+        <div class="card">
+            <table>
+                <tr><th>責任範囲</th><th>具体的タスク</th></tr>
+                <tr><td>最終決定</td><td>ビジネス判断、リリース承認、支出決定</td></tr>
+                <tr><td>商品企画</td><td>モネロ服のデザイン・調達・写真撮影</td></tr>
+                <tr><td>資金管理</td><td>Moneroウォレット管理、VPS支払い</td></tr>
+                <tr><td>マーケティング</td><td>SNS宣伝、コミュニティ活動</td></tr>
+                <tr><td>カスタマー対応</td><td>問い合わせ対応、発送作業</td></tr>
+            </table>
+        </div>
+        
+        <h3><span class="emoji">🤖</span> Antigravity部長（AI統括）<span class="role-ai">【AI】</span></h3>
+        <div class="card">
+            <table>
+                <tr><th>責任範囲</th><th>具体的タスク</th></tr>
+                <tr><td>システム設計</td><td>アーキテクチャ設計、技術選定</td></tr>
+                <tr><td>開発統括</td><td>コード作成、デプロイ、保守</td></tr>
+                <tr><td>セキュリティ</td><td>VPS設定、SSL、アクセス制御</td></tr>
+                <tr><td>ドキュメント</td><td>設計書、手順書、ガイド作成</td></tr>
+                <tr><td>調整</td><td>係長への指示、進捗管理</td></tr>
+            </table>
+        </div>
+        
+        <h3><span class="emoji">💻</span> エア係長（MacBook Air）<span class="role-ai">【AI】</span></h3>
+        <div class="card">
+            <table>
+                <tr><th>責任範囲</th><th>具体的タスク</th></tr>
+                <tr><td>自動化</td><td>デプロイ自動化、CI/CD</td></tr>
+                <tr><td>監視</td><td>サーバー監視、アラート</td></tr>
+                <tr><td>通知</td><td>Telegram通知、レポート送信</td></tr>
+                <tr><td>バックアップ</td><td>定期バックアップ、復旧テスト</td></tr>
+            </table>
+        </div>
+        
+        <h3><span class="emoji">🖥️</span> ミニ係長（Mac mini）<span class="role-ai">【AI】</span></h3>
+        <div class="card">
+            <table>
+                <tr><th>責任範囲</th><th>具体的タスク</th></tr>
+                <tr><td>価格分析</td><td>競合価格調査、市場分析</td></tr>
+                <tr><td>LLM処理</td><td>Ollama活用、テキスト生成</td></tr>
+                <tr><td>データ分析</td><td>売上分析、トレンド予測</td></tr>
+                <tr><td>翻訳</td><td>多言語対応（将来）</td></tr>
+            </table>
+        </div>
+        
+        <h2>📋 意思決定フロー</h2>
+        <div class="card">
+            <table>
+                <tr><th>決定レベル</th><th>内容</th><th>決定者</th></tr>
+                <tr><td>Level 1</td><td>技術的実装詳細</td><td>Antigravity部長</td></tr>
+                <tr><td>Level 2</td><td>機能追加・変更</td><td>Antigravity部長 → KT承認</td></tr>
+                <tr><td>Level 3</td><td>費用発生（€50以上）</td><td>KT決定</td></tr>
+                <tr><td>Level 4</td><td>ビジネス方針変更</td><td>KT決定</td></tr>
+            </table>
+        </div>
+        
+        <h2>📞 コミュニケーション</h2>
+        <div class="card">
+            <table>
+                <tr><th>チャンネル</th><th>用途</th><th>頻度</th></tr>
+                <tr><td>Telegram</td><td>日常連絡、緊急通知</td><td>随時</td></tr>
+                <tr><td>GitHub</td><td>コード、ドキュメント</td><td>変更時</td></tr>
+                <tr><td>自動通知</td><td>注文、エラー、監視</td><td>自動</td></tr>
+            </table>
+        </div>
+        
+        <h2>🚀 Phase 1 タスク割り当て</h2>
+        <div class="card">
+            <table>
+                <tr><th>タスク</th><th>担当</th><th>期限</th><th>状態</th></tr>
+                <tr><td>1984 VPS契約</td><td>KT</td><td>Day 1</td><td>⏳</td></tr>
+                <tr><td>サーバー初期設定</td><td>Antigravity</td><td>Day 1</td><td>⏳</td></tr>
+                <tr><td>BTCPay インストール</td><td>Antigravity</td><td>Day 1</td><td>⏳</td></tr>
+                <tr><td>ショップUI作成</td><td>Antigravity</td><td>Day 2</td><td>⏳</td></tr>
+                <tr><td>決済テスト</td><td>KT + Antigravity</td><td>Day 2</td><td>⏳</td></tr>
+                <tr><td>商品写真準備</td><td>KT</td><td>Day 3</td><td>⏳</td></tr>
+                <tr><td>商品登録</td><td>KT</td><td>Day 3</td><td>⏳</td></tr>
+                <tr><td>本番デプロイ</td><td>Antigravity</td><td>Day 3</td><td>⏳</td></tr>
+                <tr><td>監視設定</td><td>エア係長</td><td>Day 3</td><td>⏳</td></tr>
+                <tr><td>宣伝開始</td><td>KT</td><td>Day 4+</td><td>⏳</td></tr>
+            </table>
+        </div>
+        
+        <h2>📊 KPI（成功指標）</h2>
+        <div class="card">
+            <table>
+                <tr><th>指標</th><th>Phase 1 目標</th><th>測定方法</th></tr>
+                <tr><td>サイト稼働率</td><td>99%以上</td><td>監視システム</td></tr>
+                <tr><td>初回注文</td><td>1件以上</td><td>BTCPay記録</td></tr>
+                <tr><td>月間訪問者</td><td>100人以上</td><td>アクセスログ</td></tr>
+                <tr><td>転換率</td><td>計測開始</td><td>注文/訪問</td></tr>
+            </table>
+        </div>
+        
+        <h2>⚠️ リスク管理</h2>
+        <div class="card">
+            <table>
+                <tr><th>リスク</th><th>対策</th><th>責任者</th></tr>
+                <tr><td>サーバーダウン</td><td>監視 + 自動アラート</td><td>エア係長</td></tr>
+                <tr><td>決済トラブル</td><td>手動対応フロー確立</td><td>KT</td></tr>
+                <tr><td>法的リスク</td><td>アイスランド法管轄維持</td><td>KT</td></tr>
+                <tr><td>詐欺注文</td><td>確認後発送ルール</td><td>KT</td></tr>
+            </table>
+        </div>
+        
+        <h2>🔗 関連リンク</h2>
+        <div class="card">
+            <ul>
+                <li><a href="design.html">設計図（技術詳細）</a></li>
+                <li><a href="../../index.html">トップページ</a></li>
+            </ul>
+        </div>
+        
+        <p style="color: var(--text-muted); margin-top: 3rem; text-align: center;">
+            最終更新: 2026-01-30 | Antigravity Project
+        </p>
+    </div>
+</body>
+</html>

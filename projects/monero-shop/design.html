@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monero Shop 設計図 | Design Document</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #ff6600;
+            --green: #3fb950;
+            --yellow: #d29922;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent); }
+        h2 { font-size: 1.4rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--accent); }
+        
+        .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-muted); }
+        
+        code {
+            background: var(--surface);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', monospace;
+        }
+        
+        pre {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        
+        .status-mvp { color: var(--green); }
+        .status-future { color: var(--yellow); }
+        
+        ul { margin-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Monero Shop 設計図</h1>
+        <p class="subtitle">匿名決済対応のシンプルECサイト | Anonymous Payment E-Commerce</p>
+        
+        <h2>📋 プロジェクト概要</h2>
+        <div class="card">
+            <table>
+                <tr><th>項目</th><th>内容</th></tr>
+                <tr><td>プロジェクト名</td><td>Monero Shop（仮）</td></tr>
+                <tr><td>目的</td><td>モネロブランドアパレルの販売</td></tr>
+                <tr><td>決済方法</td><td>Monero (XMR), Litecoin (LTC)</td></tr>
+                <tr><td>ホスティング</td><td>1984 Hosting（アイスランド）</td></tr>
+                <tr><td>KYC</td><td>なし（出品者・購入者ともに）</td></tr>
+                <tr><td>エスクロー</td><td>MVP: なし → 将来: 検討</td></tr>
+            </table>
+        </div>
+        
+        <h2>🏗️ システム構成</h2>
+        <div class="card">
+            <pre>
+┌─────────────────────────────────────────────────────────┐
+│                    1984 Hosting VPS                      │
+│                   (アイスランド)                          │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐ │
+│  │   nginx     │───▶│  BTCPay     │───▶│  Monero     │ │
+│  │  (Proxy)    │    │  Server     │    │  Wallet     │ │
+│  └─────────────┘    └─────────────┘    └─────────────┘ │
+│         │                                               │
+│         ▼                                               │
+│  ┌─────────────┐    ┌─────────────┐                    │
+│  │   Shop      │───▶│  SQLite/    │                    │
+│  │   (HTML)    │    │  PostgreSQL │                    │
+│  └─────────────┘    └─────────────┘                    │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+        
+        <h2>🎯 機能一覧</h2>
+        
+        <h3 class="status-mvp">MVP（Phase 1）</h3>
+        <div class="card">
+            <ul>
+                <li>✅ 商品一覧ページ</li>
+                <li>✅ 商品詳細ページ</li>
+                <li>✅ カート機能（セッションベース）</li>
+                <li>✅ Monero決済（BTCPay経由）</li>
+                <li>✅ Litecoin決済（BTCPay経由）</li>
+                <li>✅ 注文確認メール（匿名メール可）</li>
+                <li>✅ 在庫管理（手動更新）</li>
+                <li>✅ 管理画面（ベーシック認証）</li>
+            </ul>
+        </div>
+        
+        <h3 class="status-future">将来拡張（Phase 2+）</h3>
+        <div class="card">
+            <ul>
+                <li>⏳ エスクロー機能</li>
+                <li>⏳ マルチ出品者対応</li>
+                <li>⏳ レビュー・評価システム</li>
+                <li>⏳ 自動在庫管理</li>
+                <li>⏳ 多言語対応（EN/JP）</li>
+                <li>⏳ Tor .onion アドレス</li>
+            </ul>
+        </div>
+        
+        <h2>💰 決済フロー</h2>
+        <div class="card">
+            <pre>
+1. 購入者: 商品をカートに追加
+         ↓
+2. 購入者: チェックアウト（配送先入力）
+         ↓
+3. システム: BTCPay請求書生成
+         ↓
+4. 購入者: XMR/LTC送金（15分以内）
+         ↓
+5. BTCPay: 着金確認（1-2 confirmations）
+         ↓
+6. システム: 注文確定 → 出品者に通知
+         ↓
+7. 出品者: 商品発送
+         ↓
+8. 購入者: 商品受取
+            </pre>
+        </div>
+        
+        <h2>🔐 セキュリティ</h2>
+        <div class="card">
+            <table>
+                <tr><th>項目</th><th>対策</th></tr>
+                <tr><td>通信</td><td>HTTPS必須（Let's Encrypt）</td></tr>
+                <tr><td>サーバー</td><td>アイスランド法管轄・KYCなし</td></tr>
+                <tr><td>決済</td><td>BTCPay Server（セルフホスト）</td></tr>
+                <tr><td>ログ</td><td>最小限（IPログなし）</td></tr>
+                <tr><td>管理画面</td><td>IP制限 + ベーシック認証</td></tr>
+                <tr><td>将来</td><td>Tor Hidden Service対応</td></tr>
+            </table>
+        </div>
+        
+        <h2>📦 技術スタック</h2>
+        <div class="card">
+            <table>
+                <tr><th>レイヤー</th><th>技術</th><th>理由</th></tr>
+                <tr><td>OS</td><td>Debian 12</td><td>安定性・セキュリティ</td></tr>
+                <tr><td>Web Server</td><td>nginx</td><td>高性能・軽量</td></tr>
+                <tr><td>決済</td><td>BTCPay Server</td><td>XMR/LTC対応・セルフホスト</td></tr>
+                <tr><td>Shop</td><td>静的HTML + JS</td><td>シンプル・高速</td></tr>
+                <tr><td>DB</td><td>SQLite</td><td>軽量・バックアップ容易</td></tr>
+                <tr><td>SSL</td><td>Let's Encrypt</td><td>無料・自動更新</td></tr>
+            </table>
+        </div>
+        
+        <h2>💵 コスト見積もり</h2>
+        <div class="card">
+            <table>
+                <tr><th>項目</th><th>月額</th><th>備考</th></tr>
+                <tr><td>1984 VPS</td><td>€15-25</td><td>2GB RAM / 40GB SSD</td></tr>
+                <tr><td>ドメイン</td><td>€1-2</td><td>Njalla経由（匿名）</td></tr>
+                <tr><td>決済手数料</td><td>0%</td><td>BTCPay = 手数料なし</td></tr>
+                <tr><td><strong>合計</strong></td><td><strong>€16-27/月</strong></td><td>約¥2,500-4,200/月</td></tr>
+            </table>
+        </div>
+        
+        <h2>📅 実装スケジュール</h2>
+        <div class="card">
+            <table>
+                <tr><th>日</th><th>タスク</th><th>担当</th></tr>
+                <tr><td>Day 1</td><td>1984 VPS契約・初期設定</td><td>KT + Antigravity</td></tr>
+                <tr><td>Day 1</td><td>BTCPay Server インストール</td><td>Antigravity</td></tr>
+                <tr><td>Day 2</td><td>ショップHTML/CSS作成</td><td>Antigravity</td></tr>
+                <tr><td>Day 2</td><td>決済連携テスト</td><td>KT + Antigravity</td></tr>
+                <tr><td>Day 3</td><td>商品登録・写真アップ</td><td>KT</td></tr>
+                <tr><td>Day 3</td><td>本番デプロイ</td><td>Antigravity</td></tr>
+                <tr><td>Day 4+</td><td>宣伝開始</td><td>KT</td></tr>
+            </table>
+        </div>
+        
+        <h2>🔗 関連リンク</h2>
+        <div class="card">
+            <ul>
+                <li><a href="organization.html">組織書（役割分担）</a></li>
+                <li><a href="https://1984.hosting">1984 Hosting</a></li>
+                <li><a href="https://btcpayserver.org">BTCPay Server</a></li>
+                <li><a href="https://getmonero.org">Monero公式</a></li>
+            </ul>
+        </div>
+        
+        <p style="color: var(--text-muted); margin-top: 3rem; text-align: center;">
+            最終更新: 2026-01-30 | Antigravity Project
+        </p>
+    </div>
+</body>
+</html>
